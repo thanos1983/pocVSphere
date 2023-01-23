@@ -1,0 +1,5 @@
+---
+# vars file for terraform-role
+ansible_connection: local
+# secureVarsFile: "secure-vars.yml"
+secureVarsFile: "main.yml"

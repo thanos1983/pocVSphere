@@ -1,0 +1,10 @@
+---
+# tasks file for terraform-role secureVars
+- name: Bare include (free-form)
+  ansible.builtin.include_vars:
+    dir: vars
+    files_matching: "{{ secureVarsFile }}"
+
+- name: Debug Variables
+  ansible.builtin.debug:
+    var: secureVarsFile
