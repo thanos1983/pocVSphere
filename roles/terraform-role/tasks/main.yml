@@ -1,4 +1,0 @@
----
-# tasks file for terraform-role
-- name: Include Secret Variables
-  ansible.builtin.include_tasks: secureVars.yml

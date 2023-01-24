@@ -1,8 +1,0 @@
----
-- hosts: "{{ target_hosts }}"
-  remote_user: "{{ ansible_user }}"
-  any_errors_fatal: true
-
-  roles:
-    - role: terraform-role
-      tags: [ terraform-role ]
