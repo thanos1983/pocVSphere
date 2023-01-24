@@ -30,3 +30,12 @@ override.tf.json
 
 # ingnore idea dir
 .idea
+
+# ignore swap files
+*~
+*.swp
+*.swo
+.*.swp
+
+# ignore *.tfvars as we will use sensitive data
+terraformVars/
