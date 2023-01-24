@@ -1,13 +1,11 @@
 variable "vsphere_user" {
   description = "This is the username for vSphere API operations. Can also be specified with the VSPHERE_USER environment variable."
-  default     = "some-user"
   type        = string
   sensitive   = true
 }
 
 variable "vsphere_password" {
   description = "This is the password for vSphere API operations. Can also be specified with the VSPHERE_PASSWORD environment variable."
-  default     = "some-psw"
   type        = string
   sensitive   = true
 }
