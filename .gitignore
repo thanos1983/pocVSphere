@@ -40,11 +40,11 @@ override.tf.json
 *.swo
 .*.swp
 
-# ignore *.tfvars as we will use sensitive data
-tf/tfvars/
-
 # ignore vmdk files
 *.vmdk
 
 # ignore iso files
-tf/LinuxIso/
+**/*.iso
+
+# ignore dev.tfvars
+**/dev.tfvars

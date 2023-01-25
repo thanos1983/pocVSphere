@@ -47,13 +47,13 @@ variable "vsphere_network_vm" {
   type        = string
 }
 
-variable "vsphere_virtual_machine_ubuntu" {
+variable "vsphere_virtual_machine_ubuntu_guest_id" {
   description = "The vsphere_virtual_machine data source can be used to find the UUID of an existing virtual machine or template."
   default     = "ubuntu64Guest"
   type        = string
 }
 
-variable "vsphere_virtual_machine_windows" {
+variable "vsphere_virtual_machine_windows_id" {
   description = "The vsphere_virtual_machine data source can be used to find the UUID of an existing virtual machine or template."
   default     = "windows7_64Guest"
   type        = string

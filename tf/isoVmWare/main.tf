@@ -34,10 +34,10 @@ resource "vsphere_virtual_machine" "vm" {
   network_interface {
     network_id = data.vsphere_network.network.id
   }
-  cdrom {
-    datastore_id = data.vsphere_datastore.datastore.id
-    path         = local.cd_rom_path_remote
-  }
+  #  cdrom {
+  #    datastore_id = data.vsphere_datastore.datastore.id
+  #    path         = local.cd_rom_path_remote
+  #  }
   disk {
     label = "disk0"
     size  = 20
