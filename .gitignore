@@ -41,10 +41,10 @@ override.tf.json
 .*.swp
 
 # ignore *.tfvars as we will use sensitive data
-terraformVars/
+tf/tfvars/
 
 # ignore vmdk files
 *.vmdk
 
 # ignore iso files
-LinuxIso/
+tf/LinuxIso/
