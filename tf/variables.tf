@@ -19,8 +19,12 @@ variable "vsphere_server" {
 
 variable "allow_unverified_ssl" {
   description = "Boolean that can be set to true to disable SSL certificate verification. This should be used with care as it could allow an attacker to intercept your authentication token. If omitted, default value is false."
-  type        = bool
-  default     = true
+  validation {
+    condition     = contains(["true", "false"], tostring(var.allow_unverified_ssl))
+    error_message = "Invalid input, valid input options are boolean: true, false."
+  }
+  type    = bool
+  default = true
 }
 
 variable "vsphere_datacenter" {
@@ -49,7 +53,7 @@ variable "vsphere_network_vm" {
 
 variable "vsphere_virtual_machine_ubuntu" {
   description = "The vsphere_virtual_machine data source can be used to find the UUID of an existing virtual machine or template."
-  default     = "ubuntu64Guest"
+  default     = "other3xLinuxGuest"
   type        = string
 }
 
@@ -69,4 +73,32 @@ variable "memory" {
   description = "The memory size to assign to the virtual machine, in MB. Default: 1024 (1 GB)."
   type        = number
   default     = 1024
+}
+
+variable "sync_time_with_host" {
+  description = "Enable the guest operating system to synchronization its clock with the host when the virtual machine is powered on or resumed."
+  validation {
+    condition     = contains(["true", "false"], tostring(var.sync_time_with_host))
+    error_message = "Invalid input, valid input options are boolean: true, false."
+  }
+  type    = bool
+  default = true
+}
+
+variable "disc_label" {
+  description = "A label for the virtual disk. Forces a new disk, if changed."
+  type        = string
+  default     = "disk0"
+}
+
+variable "disc_size" {
+  description = "The size of the disk, in GB. Must be a whole number."
+  type        = number
+  default     = 20
+}
+
+variable "wait_for_guest_net_timeout" {
+  description = "The amount of time, in minutes, to wait for an available guest IP address on the virtual machine."
+  type = number
+  default = 0
 }
