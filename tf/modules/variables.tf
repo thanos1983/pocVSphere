@@ -1,30 +1,22 @@
-variable "vsphere_user" {
-  description = "This is the username for vSphere API operations. Can also be specified with the VSPHERE_USER environment variable."
+variable "alternate_guest_name" {
+  description = "The guest name for the operating system when guest_id is otherGuest or otherGuest64."
   type        = string
-  sensitive   = true
+  default     = null
 }
 
-variable "vsphere_password" {
-  description = "This is the password for vSphere API operations. Can also be specified with the VSPHERE_PASSWORD environment variable."
+variable "name" {
+  description = "The name of the virtual machine."
   type        = string
-  sensitive   = true
 }
 
-variable "vsphere_server" {
-  description = "This is the vCenter Server FQDN or IP Address for vSphere API operations. Can also be specified with the VSPHERE_SERVER environment variable."
-  default     = "10.98.135.11"
+variable "resource_pool_id" {
+  description = "The managed object reference ID of the resource pool in which to place the virtual machine."
   type        = string
-  sensitive   = true
 }
 
-variable "allow_unverified_ssl" {
-  description = "Boolean that can be set to true to disable SSL certificate verification. This should be used with care as it could allow an attacker to intercept your authentication token. If omitted, default value is false."
-  validation {
-    condition     = contains(["true", "false"], tostring(var.allow_unverified_ssl))
-    error_message = "Invalid input, valid input options are boolean: true, false."
-  }
-  type    = bool
-  default = true
+variable "datastore_id" {
+  description = "The datastore ID that on which the ISO is located. Required for using a datastore ISO."
+  type        = string
 }
 
 variable "vsphere_datacenter" {
@@ -51,15 +43,8 @@ variable "vsphere_network_vm" {
   type        = string
 }
 
-variable "vsphere_virtual_machine_ubuntu" {
+variable "guest_id" {
   description = "The vsphere_virtual_machine data source can be used to find the UUID of an existing virtual machine or template."
-  default     = "other3xLinuxGuest"
-  type        = string
-}
-
-variable "vsphere_virtual_machine_windows" {
-  description = "The vsphere_virtual_machine data source can be used to find the UUID of an existing virtual machine or template."
-  default     = "windows7_64Guest"
   type        = string
 }
 
@@ -75,14 +60,19 @@ variable "memory" {
   default     = 1024
 }
 
-variable "sync_time_with_host" {
-  description = "Enable the guest operating system to synchronization its clock with the host when the virtual machine is powered on or resumed."
-  validation {
-    condition     = contains(["true", "false"], tostring(var.sync_time_with_host))
-    error_message = "Invalid input, valid input options are boolean: true, false."
-  }
-  type    = bool
-  default = true
+variable "network_interface_network_id" {
+  description = "The managed object reference ID of the network on which to connect the virtual machine network interface."
+  type        = string
+}
+
+variable "cdrom_datastore_id" {
+  description = "The datastore ID that on which the ISO is located. Required for using a datastore ISO."
+  type        = string
+}
+
+variable "cdrom_path" {
+  description = "The path to the ISO file. Required for using a datastore ISO."
+  type        = string
 }
 
 variable "disk_label" {
@@ -95,6 +85,16 @@ variable "disk_size" {
   description = "The size of the disk, in GB. Must be a whole number."
   type        = number
   default     = 20
+}
+
+variable "sync_time_with_host" {
+  description = "Enable the guest operating system to synchronization its clock with the host when the virtual machine is powered on or resumed."
+  validation {
+    condition     = contains(["true", "false"], tostring(var.sync_time_with_host))
+    error_message = "Invalid input, valid input options are boolean: true, false."
+  }
+  type    = bool
+  default = true
 }
 
 variable "wait_for_guest_net_timeout" {
