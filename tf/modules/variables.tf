@@ -27,9 +27,9 @@ variable "clones" {
   type        = list(object({
     template_uuid  = optional(string)
     linked_clone   = optional(string)
-    timeout        = optional(number)
+    timeout        = optional(number, 30)
     customizations = optional(list(object({
-      timeout            = optional(number)
+      timeout            = optional(number, 10)
       network_interfaces = optional(list(object({
         dns_server_list = optional(string)
         dns_domain      = optional(string)
@@ -45,7 +45,7 @@ variable "clones" {
       linux_options_block = optional(object({
         host_name    = optional(string)
         domain       = optional(string)
-        hw_clock_utc = optional(string)
+        hw_clock_utc = optional(bool, true)
         script_text  = optional(string)
         time_zone    = optional(string)
       }))
@@ -60,11 +60,11 @@ variable "clones" {
         organization_name     = optional(string)
         product_key           = optional(string)
         run_once_command_list = optional(list(string))
-        auto_logon            = optional(bool)
-        auto_logon_count      = optional(number)
-        time_zone             = optional(number)
+        auto_logon            = optional(bool, false)
+        auto_logon_count      = optional(number, 1)
+        time_zone             = optional(number, 85)
       }))
-      windows_sysprep_text  = optional(string)
+      windows_sysprep_text = optional(string)
     })))
   }))
   default = []
@@ -141,21 +141,6 @@ variable "memory" {
   type        = number
   default     = 1024
 }
-
-#variable "network_interface_network_id" {
-#  description = "The managed object reference ID of the network on which to connect the virtual machine network interface."
-#  type        = string
-#}
-
-#variable "cdrom_datastore_id" {
-#  description = "The datastore ID that on which the ISO is located. Required for using a datastore ISO."
-#  type        = string
-#}
-#
-#variable "cdrom_path" {
-#  description = "The path to the ISO file. Required for using a datastore ISO."
-#  type        = string
-#}
 
 variable "disk_label" {
   description = "A label for the virtual disk. Forces a new disk, if changed."
