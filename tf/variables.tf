@@ -1,3 +1,33 @@
+variable "cdrom_content" {
+  description = "A specification for a CD-ROM device on the virtual machine."
+  type        = object({
+    datastore_id = string
+    path         = string
+  })
+  default = {
+    datastore_id = null
+    path         = null
+  }
+}
+
+variable "name" {
+  description = "Name of the VM."
+  type        = string
+  default     = "foo"
+}
+
+variable "network_interfaces" {
+  description = "A specification for a virtual NIC on the virtual machine."
+  type        = list(object({
+    network_id = string
+  }))
+  default = [
+    {
+      network_id = null
+    }
+  ]
+}
+
 variable "vsphere_user" {
   description = "This is the username for vSphere API operations. Can also be specified with the VSPHERE_USER environment variable."
   type        = string

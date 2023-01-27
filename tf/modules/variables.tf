@@ -4,9 +4,91 @@ variable "alternate_guest_name" {
   default     = null
 }
 
+variable "annotation" {
+  description = "A user-provided description of the virtual machine."
+  type        = string
+  default     = null
+}
+
+variable "cdrom_content" {
+  description = "A specification for a CD-ROM device on the virtual machine."
+  type        = object({
+    datastore_id = string
+    path         = string
+  })
+  default = {
+    datastore_id = null
+    path         = null
+  }
+}
+
+variable "clones" {
+  description = "The clones block can be used to create a new virtual machine from an existing virtual machine or template."
+  type        = list(object({
+    template_uuid  = optional(string)
+    linked_clone   = optional(string)
+    timeout        = optional(number)
+    customizations = optional(list(object({
+      timeout            = optional(number)
+      network_interfaces = optional(list(object({
+        dns_server_list = optional(string)
+        dns_domain      = optional(string)
+        ipv4_address    = optional(string)
+        ipv4_netmask    = optional(number)
+        ipv6_address    = optional(string)
+        ipv6_netmask    = optional(number)
+      })))
+      ipv4_gateway        = optional(string)
+      ipv6_gateway        = optional(string)
+      dns_server_list     = optional(string)
+      dns_suffix_list     = optional(string)
+      linux_options_block = optional(object({
+        host_name    = optional(string)
+        domain       = optional(string)
+        hw_clock_utc = optional(string)
+        script_text  = optional(string)
+        time_zone    = optional(string)
+      }))
+      windows_options_block = optional(object({
+        computer_name         = optional(string)
+        admin_password        = optional(string)
+        workgroup             = optional(string)
+        join_domain           = optional(string)
+        domain_admin_user     = optional(string)
+        domain_admin_password = optional(string)
+        full_name             = optional(string)
+        organization_name     = optional(string)
+        product_key           = optional(string)
+        run_once_command_list = optional(list(string))
+        auto_logon            = optional(bool)
+        auto_logon_count      = optional(number)
+        time_zone             = optional(number)
+      }))
+      windows_sysprep_text  = optional(string)
+    })))
+  }))
+  default = []
+}
+
 variable "name" {
   description = "The name of the virtual machine."
   type        = string
+}
+
+variable "network_interfaces" {
+  description = "A specification for a virtual NIC on the virtual machine."
+  type        = list(object({
+    network_id            = optional(string)
+    adapter_type          = optional(string)
+    use_static_mac        = optional(bool)
+    mac_address           = optional(string)
+    bandwidth_limit       = optional(number)
+    bandwidth_reservation = optional(number)
+    bandwidth_share_level = optional(string)
+    bandwidth_share_count = optional(number)
+    ovf_mapping           = optional(string)
+  }))
+  default = []
 }
 
 variable "resource_pool_id" {
@@ -60,20 +142,20 @@ variable "memory" {
   default     = 1024
 }
 
-variable "network_interface_network_id" {
-  description = "The managed object reference ID of the network on which to connect the virtual machine network interface."
-  type        = string
-}
+#variable "network_interface_network_id" {
+#  description = "The managed object reference ID of the network on which to connect the virtual machine network interface."
+#  type        = string
+#}
 
-variable "cdrom_datastore_id" {
-  description = "The datastore ID that on which the ISO is located. Required for using a datastore ISO."
-  type        = string
-}
-
-variable "cdrom_path" {
-  description = "The path to the ISO file. Required for using a datastore ISO."
-  type        = string
-}
+#variable "cdrom_datastore_id" {
+#  description = "The datastore ID that on which the ISO is located. Required for using a datastore ISO."
+#  type        = string
+#}
+#
+#variable "cdrom_path" {
+#  description = "The path to the ISO file. Required for using a datastore ISO."
+#  type        = string
+#}
 
 variable "disk_label" {
   description = "A label for the virtual disk. Forces a new disk, if changed."
@@ -91,7 +173,7 @@ variable "sync_time_with_host" {
   description = "Enable the guest operating system to synchronization its clock with the host when the virtual machine is powered on or resumed."
   validation {
     condition     = contains(["true", "false"], tostring(var.sync_time_with_host))
-    error_message = "Invalid input, valid input options are boolean: true, false."
+    error_message = "Invalid input, valid input options are boolean: true or false."
   }
   type    = bool
   default = true
