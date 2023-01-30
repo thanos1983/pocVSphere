@@ -22,13 +22,13 @@ variable "cdrom_content" {
   }
 }
 
-variable "clones" {
-  description = "The clones block can be used to create a new virtual machine from an existing virtual machine or template."
-  type        = list(object({
-    template_uuid  = optional(string)
-    linked_clone   = optional(string)
-    timeout        = optional(number, 30)
-    customizations = optional(list(object({
+variable "clone_content" {
+  description = "The clone block can be used to create a new virtual machine from an existing virtual machine or template."
+  type        = object({
+    template_uuid     = optional(string)
+    linked_clone      = optional(string)
+    timeout           = optional(number)
+    customize_content = optional(object({
       timeout            = optional(number, 10)
       network_interfaces = optional(list(object({
         dns_server_list = optional(string)
@@ -37,7 +37,7 @@ variable "clones" {
         ipv4_netmask    = optional(number)
         ipv6_address    = optional(string)
         ipv6_netmask    = optional(number)
-      })))
+      })), [])
       ipv4_gateway        = optional(string)
       ipv6_gateway        = optional(string)
       dns_server_list     = optional(string)
@@ -48,7 +48,7 @@ variable "clones" {
         hw_clock_utc = optional(bool, true)
         script_text  = optional(string)
         time_zone    = optional(string)
-      }))
+      }), {})
       windows_options_block = optional(object({
         computer_name         = optional(string)
         admin_password        = optional(string)
@@ -63,11 +63,11 @@ variable "clones" {
         auto_logon            = optional(bool, false)
         auto_logon_count      = optional(number, 1)
         time_zone             = optional(number, 85)
-      }))
+      }), {})
       windows_sysprep_text = optional(string)
-    })))
-  }))
-  default = []
+    }), {})
+  })
+  default = null
 }
 
 variable "name" {
@@ -152,6 +152,12 @@ variable "disk_size" {
   description = "The size of the disk, in GB. Must be a whole number."
   type        = number
   default     = 20
+}
+
+variable "thin_provisioned" {
+  description = "With the disk-level thin provisioning feature, you can create virtual disks in a thin format."
+  type        = bool
+  default     = true
 }
 
 variable "sync_time_with_host" {

@@ -11,13 +11,13 @@ resource "vsphere_virtual_machine" "vm" {
   }
 
   dynamic "clone" {
-    for_each = var.clones
+    for_each = var.clone_content[*]
     content {
       template_uuid = clone.value.template_uuid
       linked_clone  = clone.value.linked_clone
       timeout       = clone.value.timeout
       dynamic "customize" {
-        for_each = clone.value.customizations
+        for_each = clone.value.customize_content[*]
         content {
           timeout = customize.value.timeout
           dynamic "network_interface" {
@@ -93,7 +93,15 @@ resource "vsphere_virtual_machine" "vm" {
   }
 
   disk {
-    label = var.disk_label
-    size  = var.disk_size
+    label            = var.disk_label
+    size             = var.disk_size
+    thin_provisioned = var.thin_provisioned
   }
+
+  lifecycle {
+    ignore_changes = [
+      cdrom
+    ]
+  }
+
 }

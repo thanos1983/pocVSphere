@@ -10,6 +10,16 @@ variable "cdrom_content" {
   }
 }
 
+variable "clone_content" {
+  description = "The clone block can be used to create a new virtual machine from an existing virtual machine or template."
+  type        = object({
+    template_uuid = optional(string)
+    linked_clone  = optional(string)
+    timeout       = optional(number)
+  })
+  default = null
+}
+
 variable "name" {
   description = "Name of the VM."
   type        = string
@@ -83,7 +93,7 @@ variable "vsphere_network_vm" {
 
 variable "vsphere_virtual_machine_ubuntu" {
   description = "The vsphere_virtual_machine data source can be used to find the UUID of an existing virtual machine or template."
-  default     = "other3xLinuxGuest"
+  default     = "other4xLinux64Guest"
   type        = string
 }
 
