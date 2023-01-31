@@ -21,7 +21,7 @@ resource "vsphere_virtual_machine" "vm" {
         content {
           timeout = customize.value.timeout
           dynamic "network_interface" {
-            for_each = clone.value.network_interfaces
+            for_each = customize.value.network_interfaces
             content {
               dns_server_list = network_interface.value.dns_server_list
               dns_domain      = network_interface.value.dns_domain
@@ -36,7 +36,7 @@ resource "vsphere_virtual_machine" "vm" {
           dns_server_list = customize.value.dns_server_list
           dns_suffix_list = customize.value.dns_suffix_list
           dynamic "linux_options" {
-            for_each = clone.value.linux_options_block
+            for_each = customize.value.linux_options_content[*]
             content {
               host_name    = linux_options.value.host_name
               domain       = linux_options.value.domain
@@ -46,7 +46,7 @@ resource "vsphere_virtual_machine" "vm" {
             }
           }
           dynamic "windows_options" {
-            for_each = clone.value.windows_options_block
+            for_each = customize.value.windows_options_content[*]
             content {
               computer_name         = windows_options.value.computer_name
               admin_password        = windows_options.value.admin_password
@@ -74,6 +74,7 @@ resource "vsphere_virtual_machine" "vm" {
   resource_pool_id           = var.resource_pool_id
   datastore_id               = var.datastore_id
   guest_id                   = var.guest_id
+  scsi_type                  = var.scsi_type
   num_cpus                   = var.num_cpus
   memory                     = var.memory
   name                       = var.name
@@ -97,11 +98,4 @@ resource "vsphere_virtual_machine" "vm" {
     size             = var.disk_size
     thin_provisioned = var.thin_provisioned
   }
-
-  lifecycle {
-    ignore_changes = [
-      cdrom
-    ]
-  }
-
 }

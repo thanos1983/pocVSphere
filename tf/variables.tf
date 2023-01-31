@@ -1,6 +1,6 @@
 variable "cdrom_content" {
   description = "A specification for a CD-ROM device on the virtual machine."
-  type        = object({
+  type = object({
     datastore_id = string
     path         = string
   })
@@ -12,7 +12,7 @@ variable "cdrom_content" {
 
 variable "clone_content" {
   description = "The clone block can be used to create a new virtual machine from an existing virtual machine or template."
-  type        = object({
+  type = object({
     template_uuid = optional(string)
     linked_clone  = optional(string)
     timeout       = optional(number)
@@ -23,12 +23,18 @@ variable "clone_content" {
 variable "name" {
   description = "Name of the VM."
   type        = string
-  default     = "foo"
+  default     = "ubuntu-server-template"
+}
+
+variable "name-template" {
+  description = "Name of the VM."
+  type        = string
+  default     = "ubuntu-server-template"
 }
 
 variable "network_interfaces" {
   description = "A specification for a virtual NIC on the virtual machine."
-  type        = list(object({
+  type = list(object({
     network_id = string
   }))
   default = [

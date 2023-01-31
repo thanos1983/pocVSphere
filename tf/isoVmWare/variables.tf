@@ -1,3 +1,49 @@
+variable "cdrom_content" {
+  description = "A specification for a CD-ROM device on the virtual machine."
+  type = object({
+    datastore_id = string
+    path         = string
+  })
+  default = {
+    datastore_id = null
+    path         = null
+  }
+}
+
+variable "clone_content" {
+  description = "The clone block can be used to create a new virtual machine from an existing virtual machine or template."
+  type = object({
+    template_uuid = optional(string)
+    linked_clone  = optional(string)
+    timeout       = optional(number)
+  })
+  default = null
+}
+
+variable "name" {
+  description = "Name of the VM."
+  type        = string
+  default     = "ubuntu-server-template"
+}
+
+variable "name-template" {
+  description = "Name of the VM."
+  type        = string
+  default     = "ubuntu-server-template"
+}
+
+variable "network_interfaces" {
+  description = "A specification for a virtual NIC on the virtual machine."
+  type = list(object({
+    network_id = string
+  }))
+  default = [
+    {
+      network_id = null
+    }
+  ]
+}
+
 variable "vsphere_user" {
   description = "This is the username for vSphere API operations. Can also be specified with the VSPHERE_USER environment variable."
   type        = string
@@ -53,7 +99,7 @@ variable "vsphere_network_vm" {
 
 variable "vsphere_virtual_machine_ubuntu" {
   description = "The vsphere_virtual_machine data source can be used to find the UUID of an existing virtual machine or template."
-  default     = "other3xLinuxGuest"
+  default     = "other4xLinux64Guest"
   type        = string
 }
 
@@ -85,13 +131,13 @@ variable "sync_time_with_host" {
   default = true
 }
 
-variable "disc_label" {
+variable "disk_label" {
   description = "A label for the virtual disk. Forces a new disk, if changed."
   type        = string
   default     = "disk0"
 }
 
-variable "disc_size" {
+variable "disk_size" {
   description = "The size of the disk, in GB. Must be a whole number."
   type        = number
   default     = 20
@@ -99,6 +145,6 @@ variable "disc_size" {
 
 variable "wait_for_guest_net_timeout" {
   description = "The amount of time, in minutes, to wait for an available guest IP address on the virtual machine."
-  type = number
-  default = 0
+  type        = number
+  default     = 0
 }
