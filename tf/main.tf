@@ -1,6 +1,6 @@
 module "vm-template" {
   source                     = "./modules"
-  name                       = local.name
+  name                       = var.name
   resource_pool_id           = data.vsphere_compute_cluster.cluster.resource_pool_id
   datastore_id               = data.vsphere_datastore.datastore.id
   num_cpus                   = var.num_cpus
@@ -11,7 +11,7 @@ module "vm-template" {
   sync_time_with_host        = var.sync_time_with_host
   network_interfaces         = local.network_interfaces
   disk_label                 = var.disk_label
-  disk_size                  = data.vsphere_virtual_machine.template.disks.0.size
-  thin_provisioned           = data.vsphere_virtual_machine.template.disks.0.thin_provisioned
+  disk_size                  = data.vsphere_virtual_machine.template.disks["0"].size
+  thin_provisioned           = data.vsphere_virtual_machine.template.disks["0"].thin_provisioned
   clone_content              = local.clone_content
 }

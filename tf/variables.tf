@@ -1,47 +1,13 @@
-variable "cdrom_content" {
-  description = "A specification for a CD-ROM device on the virtual machine."
-  type = object({
-    datastore_id = string
-    path         = string
-  })
-  default = {
-    datastore_id = null
-    path         = null
-  }
-}
-
-variable "clone_content" {
-  description = "The clone block can be used to create a new virtual machine from an existing virtual machine or template."
-  type = object({
-    template_uuid = optional(string)
-    linked_clone  = optional(string)
-    timeout       = optional(number)
-  })
-  default = null
-}
-
 variable "name" {
   description = "Name of the VM."
   type        = string
-  default     = "ubuntu-server-template"
+  default     = "ubuntu-server-template-demo"
 }
 
 variable "name-template" {
-  description = "Name of the VM."
+  description = "Name of the VM Template."
   type        = string
   default     = "ubuntu-server-template"
-}
-
-variable "network_interfaces" {
-  description = "A specification for a virtual NIC on the virtual machine."
-  type = list(object({
-    network_id = string
-  }))
-  default = [
-    {
-      network_id = null
-    }
-  ]
 }
 
 variable "vsphere_user" {
@@ -97,18 +63,6 @@ variable "vsphere_network_vm" {
   type        = string
 }
 
-variable "vsphere_virtual_machine_ubuntu" {
-  description = "The vsphere_virtual_machine data source can be used to find the UUID of an existing virtual machine or template."
-  default     = "other4xLinux64Guest"
-  type        = string
-}
-
-variable "vsphere_virtual_machine_windows" {
-  description = "The vsphere_virtual_machine data source can be used to find the UUID of an existing virtual machine or template."
-  default     = "windows7_64Guest"
-  type        = string
-}
-
 variable "num_cpus" {
   description = "The total number of virtual processor cores to assign to the virtual machine. Default: 1."
   type        = number
@@ -135,12 +89,6 @@ variable "disk_label" {
   description = "A label for the virtual disk. Forces a new disk, if changed."
   type        = string
   default     = "disk0"
-}
-
-variable "disk_size" {
-  description = "The size of the disk, in GB. Must be a whole number."
-  type        = number
-  default     = 20
 }
 
 variable "wait_for_guest_net_timeout" {
