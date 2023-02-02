@@ -1,0 +1,8 @@
+---
+uid: 9999
+gid: 9999
+old_uid: 1001
+
+user: 'sampleUser'
+group: 'sampleGroup'
+password: 'samplePassword'

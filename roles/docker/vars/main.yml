@@ -1,0 +1,6 @@
+---
+# vars file for roles/docker
+minio:
+  ui_port: 9001
+  console_port: 9000
+  minio_data_dir: "s3DemoDir"

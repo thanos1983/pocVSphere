@@ -4,11 +4,21 @@ Create / Destroy resources with terraform for VSphere
 ## Prerequisites
 ### Packages Ubuntu
 
-The user needs to install the `sshpass` package for ssh username / keys. Sample:
+The user needs to install the `sshpass` package for ssh username / keys. It is also recommended to install `docker` and `docker-compose` packages. Sample:
 
 ```bash
 sudo apt-get install sshpass -y
 ```
+
+For Ubuntu the documentation can be found here: [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/).
+
+Assuming the user has followed all the steps as described above sample of command for installing the packages:
+
+```shell
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+```
+
+For ease of use it is recommended that the user will also apply the [Docker Engine post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/).
 
 ### Packages Ansible
 
@@ -21,7 +31,7 @@ The user needs to install the python package for encryption / descryption and al
 The packages can be either installed by `pip`:
 
 ```bash
-pip install cryptography aiohttp
+pip3 install cryptography aiohttp docker docker-compose --upgrade
 ```
 
 Or by `Ansible` packages:

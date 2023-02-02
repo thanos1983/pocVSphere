@@ -1,0 +1,27 @@
+---
+# tasks file for roles/docker docker_compose
+- community.docker.docker_compose:
+    project_name: terraform
+    definition:
+      version: '3.9'
+      services:
+#        vault:
+#          image: postgres
+        s3:
+          image: "quay.io/minio/minio"
+          command: "server /data --console-address ':{{ minio.ui_port }}'"
+          env_file:
+            - "{{ role_path }}/files/minio.env"
+          volumes:
+            - "{{ ansible_env.HOME }}/{{ minio.minio_data_dir }}:/data"
+          ports:
+            - "{{ minio.ui_port }}:{{ minio.ui_port }}"
+            - "{{ minio.console_port }}:{{ minio.console_port }}"
+#          depends_on:
+#            - vault
+  register: output
+
+- ansible.builtin.assert:
+    that:
+      - "output.services.s3.terraform_s3_1.state.running"
+#      - "output.services.vault.terraform_s3_1.state.running"

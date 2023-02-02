@@ -1,0 +1,9 @@
+---
+# tasks file for roles/docker
+#- name: Include task docker compose
+#  ansible.builtin.include_tasks:
+#    file: prerequisites.yaml
+
+- name: Include task docker compose
+  ansible.builtin.include_tasks:
+    file: docker_compose.yaml
