@@ -56,7 +56,7 @@ function deploy() {
         -e target_hosts=${target_hosts_group} \
         -e ansible_ssh_pass=${ansible_password} \
         --connection=local \
-        deploy.yml -v || error "deploy"
+        deploy.yml -vvvv || error "deploy"
     else
       ansible-playbook \
         -i ${inventory_file} \

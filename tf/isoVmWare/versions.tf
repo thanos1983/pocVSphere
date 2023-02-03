@@ -6,18 +6,19 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "demo"
+    bucket = "iso"
     key    = "terraform.tfstate"
 
-    endpoint = "http://127.0.0.1:9000"
+    endpoint = "https://localhost:9000"
 
-    access_key = "wFJPCckVw2sRzurq"
-    secret_key = "zr1NAJ4CtRxowNvseKLJug9JrWqfLhk3"
+    access_key = "minioadmin"
+    secret_key = "minioadmin"
 
     region                      = "main"
+#    encrypt                     = "AES256"
     skip_credentials_validation = true
-    skip_metadata_api_check     = true
     skip_region_validation      = true
+    skip_metadata_api_check     = true
     force_path_style            = true
   }
   required_version = ">= 0.13"

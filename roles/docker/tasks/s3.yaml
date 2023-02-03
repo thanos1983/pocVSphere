@@ -1,0 +1,16 @@
+---
+# tasks file for roles/docker s3
+- name: Create an S3 bucket
+  amazon.aws.s3_bucket:
+      name: "{{ project.definition.services.s3.s3_bucket.name }}"
+      state: "{{ project.definition.services.s3.s3_bucket.state }}"
+      encryption: "{{ project.definition.services.s3.s3_bucket.encryption }}"
+      versioning: "{{ project.definition.services.s3.s3_bucket.versioning }}"
+      access_key: "{{ project.definition.services.s3.minio_root_user }}"
+      secret_key: "{{ project.definition.services.s3.minio_root_password }}"
+      requester_pays: "{{ project.definition.services.s3.s3_bucket.requester_pays }}"
+      validate_certs: "{{ project.definition.services.s3.s3_bucket.validate_certs }}"
+      endpoint_url: "{{ project.definition.services.s3.s3_bucket.endpoint_url }}:{{ project.definition.services.s3.console_port }}"
+      aws_ca_bundle: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.crt }}"
+      tags:
+        test: "{{ project.definition.services.s3.s3_bucket.tags.value }}"

@@ -1,6 +1,49 @@
 ---
 # vars file for roles/docker
-minio:
-  ui_port: 9001
-  console_port: 9000
-  minio_data_dir: "s3DemoDir"
+project:
+  name: terraform
+  definition:
+    version: "3.9"
+    services:
+      s3:
+        ui_port: 9001
+        console_port: 9000
+        image: "quay.io/minio/minio"
+        minio_root_user: "minioadmin"
+        minio_root_password: "minioadmin"
+        s3_bucket:
+          name: "demo"
+          state: present
+          versioning: true
+          encryption: "none"
+          file: "policy.json"
+          validate_certs: true
+          requester_pays: false
+          permission: "private"
+          endpoint_url: "https://localhost"
+          tags:
+            value: "demo bucket"
+        user:
+          id: 1000
+          group: 1000
+        cert:
+          size: 4096
+          force: true
+          cipher: "auto"
+          csr: "public.csr"
+          crt: "public.crt"
+          key: "private.key"
+          country_name: "DK"
+          passphrase: "nnit"
+          provider: "selfsigned"
+          organization_name: "NNIT"
+          email_address: "demo@nnit.com"
+          subject_alt_name:
+            - "localhost"
+            - "minio.example.net"
+        dirs:
+          mode: "0755"
+          recurse: true
+          state: directory
+          data: "s3DemoDir/data"
+          certs: "s3DemoDir/certs"

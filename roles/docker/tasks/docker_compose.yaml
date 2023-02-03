@@ -1,24 +1,28 @@
 ---
 # tasks file for roles/docker docker_compose
 - community.docker.docker_compose:
-    project_name: terraform
+    project_name: "{{ project.name }}"
     definition:
-      version: '3.9'
+      version: "{{ project.definition.version }}"
       services:
-#        vault:
-#          image: postgres
+        #        vault:
+        #          image: postgres
         s3:
-          image: "quay.io/minio/minio"
-          command: "server /data --console-address ':{{ minio.ui_port }}'"
-          env_file:
-            - "{{ role_path }}/files/minio.env"
+          image: "{{ project.definition.services.s3.image }}"
+          command: "server /data --console-address ':{{ project.definition.services.s3.ui_port }}'"
+          user: "{{ project.definition.services.s3.user.id }}:{{ project.definition.services.s3.user.group }}"
+          environment:
+            - "MINIO_ROOT_USER={{ project.definition.services.s3.minio_root_user }}"
+            - "MINIO_CERT_PASSWD={{ project.definition.services.s3.cert.passphrase }}"
+            - "MINIO_ROOT_PASSWORD={{ project.definition.services.s3.minio_root_password }}"
           volumes:
-            - "{{ ansible_env.HOME }}/{{ minio.minio_data_dir }}:/data"
+            - "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.data }}:/data"
+            - "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.certs }}:/.minio/certs"
           ports:
-            - "{{ minio.ui_port }}:{{ minio.ui_port }}"
-            - "{{ minio.console_port }}:{{ minio.console_port }}"
-#          depends_on:
-#            - vault
+            - "{{ project.definition.services.s3.ui_port }}:{{ project.definition.services.s3.ui_port }}"
+            - "{{ project.definition.services.s3.console_port }}:{{ project.definition.services.s3.console_port }}"
+  #          depends_on:
+  #            - vault
   register: output
 
 - ansible.builtin.assert:

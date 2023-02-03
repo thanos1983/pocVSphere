@@ -1,0 +1,31 @@
+---
+# tasks file for roles/docker cert
+- name: Generate an OpenSSL private key with the default values (4096 bits, RSA)
+  community.crypto.openssl_privatekey:
+    size: "{{ project.definition.services.s3.cert.size }}"
+    force: "{{ project.definition.services.s3.cert.force }}"
+    cipher: "{{ project.definition.services.s3.cert.cipher }}"
+    passphrase: "{{ project.definition.services.s3.cert.passphrase }}"
+    path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.key }}"
+
+- name: Generate an OpenSSL CSR with subjectAltName extension with dynamic list
+  community.crypto.openssl_csr:
+    common_name: "{{ ansible_hostname }}"
+    force: "{{ project.definition.services.s3.cert.force }}"
+    country_name: "{{ project.definition.services.s3.cert.country_name }}"
+    email_address: "{{ project.definition.services.s3.cert.email_address }}"
+    privatekey_passphrase: "{{ project.definition.services.s3.cert.passphrase }}"
+    subject_alt_name: "{{ item.value | map('regex_replace', '^', 'DNS:') | list }}"
+    organization_name: "{{ project.definition.services.s3.cert.organization_name }}"
+    path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.csr }}"
+    privatekey_path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.key }}"
+  with_dict:
+    dns_server: "{{ project.definition.services.s3.cert.subject_alt_name }}"
+
+- name: Generate a Self Signed OpenSSL certificate
+  community.crypto.x509_certificate:
+    provider: "{{ project.definition.services.s3.cert.provider }}"
+    privatekey_passphrase: "{{ project.definition.services.s3.cert.passphrase }}"
+    path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.crt }}"
+    csr_path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.csr }}"
+    privatekey_path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.key }}"
