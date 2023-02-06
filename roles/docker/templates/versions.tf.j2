@@ -1,0 +1,24 @@
+terraform {
+  required_providers {
+    vsphere = {
+      source  = "hashicorp/vsphere"
+      version = ">= {{ terraform.vsphere_version }}"
+    }
+  }
+  backend "s3" {
+    bucket = "{{ project.definition.services.s3.s3_bucket.name }}"
+    key    = "terraform.tfstate"
+
+    endpoint = "{{ project.definition.services.s3.s3_bucket.endpoint_url }}:{{ project.definition.services.s3.console_port }}"
+
+    access_key = "{{ project.definition.services.s3.access_key }}"
+    secret_key = "{{ project.definition.services.s3.secret_key }}"
+
+    region                      = "main"
+    skip_credentials_validation = true
+    skip_metadata_api_check     = true
+    skip_region_validation      = true
+    force_path_style            = true
+  }
+  required_version = ">= {{ terraform.required_version }}"
+}

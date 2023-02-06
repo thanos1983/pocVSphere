@@ -41,6 +41,49 @@ ansible-galaxy collection install community.crypto
 ansible-galaxy collection install vmware.vmware_rest
 ```
 
+### Caution
+
+On this module we have used self-signed certificates. S3 buckets (Amazon) do not allow connection with non-certified SSL providers, hence the self-signed certificates are not allowed to connect with S3 bucket. As a workaround the user can copy the public key from the generated (dedicated directory) to the certificates directory and update the certificates list in order to include it (locally) as approved certificate.  
+
+The procedure differs per Linux vendor. On this tutorial we will demonstrate how it can by accomplished in Ubuntu (Debian based) Operating System (OS). 
+
+We could automate this procedure through Ansible but it would also require elevated access, hence we decided not apply it as we want the playbook to be non-root user executable. 
+
+Sample of manual steps of copying the CA to local approved certificates:
+
+```shell
+sudo cp /home/<user>/s3DemoDir/certs/public.crt /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+```
+
+After the user should be able to use `terraform init -reconfigure` to allow local CA to be used towards S3 bucket (minio).
+
+Sample of expected output:
+
+```shell
+$ terraform init -reconfigure
+Initializing modules...
+
+Initializing the backend...
+
+Successfully configured the backend "s3"! Terraform will automatically
+use this backend unless the backend configuration changes.
+
+Initializing provider plugins...
+- Reusing previous version of hashicorp/vsphere from the dependency lock file
+- Using previously-installed hashicorp/vsphere v2.2.0
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+```
+
 If the user observes the error:
 
 ```bash

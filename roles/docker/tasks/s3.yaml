@@ -4,10 +4,10 @@
   amazon.aws.s3_bucket:
       name: "{{ project.definition.services.s3.s3_bucket.name }}"
       state: "{{ project.definition.services.s3.s3_bucket.state }}"
+      access_key: "{{ project.definition.services.s3.access_key }}"
+      secret_key: "{{ project.definition.services.s3.secret_key }}"
       encryption: "{{ project.definition.services.s3.s3_bucket.encryption }}"
       versioning: "{{ project.definition.services.s3.s3_bucket.versioning }}"
-      access_key: "{{ project.definition.services.s3.minio_root_user }}"
-      secret_key: "{{ project.definition.services.s3.minio_root_password }}"
       requester_pays: "{{ project.definition.services.s3.s3_bucket.requester_pays }}"
       validate_certs: "{{ project.definition.services.s3.s3_bucket.validate_certs }}"
       endpoint_url: "{{ project.definition.services.s3.s3_bucket.endpoint_url }}:{{ project.definition.services.s3.console_port }}"

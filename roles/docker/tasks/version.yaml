@@ -1,0 +1,7 @@
+---
+# tasks file for roles/docker version
+- name: Prepare version.tf file for Vsphere module
+  ansible.builtin.template:
+    mode: "{{ terraform.module.version_tf_template.mode }}"
+    dest: "{{ ansible_env.HOME }}/{{ terraform.module.version_tf_template.dest }}"
+    src: "{{ role_path }}/templates/{{ terraform.module.version_tf_template.src }}"

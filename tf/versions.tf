@@ -19,7 +19,6 @@ terraform {
     skip_metadata_api_check     = true
     skip_region_validation      = true
     force_path_style            = true
-    skip_cert_verification      = true
   }
   required_version = ">= 0.13"
 }

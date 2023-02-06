@@ -12,9 +12,9 @@
           command: "server /data --console-address ':{{ project.definition.services.s3.ui_port }}'"
           user: "{{ project.definition.services.s3.user.id }}:{{ project.definition.services.s3.user.group }}"
           environment:
-            - "MINIO_ROOT_USER={{ project.definition.services.s3.minio_root_user }}"
+            - "MINIO_ROOT_USER={{ project.definition.services.s3.access_key }}"
+            - "MINIO_ROOT_PASSWORD={{ project.definition.services.s3.secret_key }}"
             - "MINIO_CERT_PASSWD={{ project.definition.services.s3.cert.passphrase }}"
-            - "MINIO_ROOT_PASSWORD={{ project.definition.services.s3.minio_root_password }}"
           volumes:
             - "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.data }}:/data"
             - "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.certs }}:/.minio/certs"

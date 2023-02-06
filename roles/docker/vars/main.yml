@@ -1,5 +1,14 @@
 ---
 # vars file for roles/docker
+terraform:
+  vsphere_version: "2.2.0"
+  required_version: "0.13"
+  module:
+    version_tf_template:
+      mode: "0644"
+      src: "versions.tf.j2"
+      dest: "pocVSphere/tf/versions.tf"
+
 project:
   name: terraform
   definition:
@@ -9,8 +18,8 @@ project:
         ui_port: 9001
         console_port: 9000
         image: "quay.io/minio/minio"
-        minio_root_user: "minioadmin"
-        minio_root_password: "minioadmin"
+        access_key: "minioadmin"
+        secret_key: "minioadmin"
         s3_bucket:
           name: "demo"
           state: present
