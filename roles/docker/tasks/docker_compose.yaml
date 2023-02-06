@@ -5,15 +5,23 @@
     definition:
       version: "{{ project.definition.version }}"
       services:
-        #        vault:
-        #          image: postgres
+        vault:
+          image: "{{ project.definition.services.vault.image }}"
+          restart: "{{ project.definition.services.vault.restart }}"
+          container_name: "{{ project.definition.services.vault.container_name }}"
+#          user: "{{ project.definition.services.vault.user.id }}:{{ project.definition.services.vault.user.group }}"
+          ports:
+            - "{{ project.definition.services.vault.ui_port }}:{{ project.definition.services.vault.ui_port }}"
+          cap_add:
+            - "{{ project.definition.services.vault.cap_add }}"
         s3:
           image: "{{ project.definition.services.s3.image }}"
           restart: "{{ project.definition.services.s3.restart }}"
+          container_name: "{{ project.definition.services.s3.container_name }}"
           command: "server /data --console-address ':{{ project.definition.services.s3.ui_port }}'"
           user: "{{ project.definition.services.s3.user.id }}:{{ project.definition.services.s3.user.group }}"
           healthcheck:
-            test: ["CMD", "curl", "-If", "--cacert", ".minio/certs/public.crt", "{{ project.definition.services.s3.s3_bucket.endpoint_url }}:{{ project.definition.services.s3.ui_port }}"]
+            test: [ "CMD", "curl", "-If", "--cacert", ".minio/certs/public.crt", "{{ project.definition.services.s3.s3_bucket.endpoint_url }}:{{ project.definition.services.s3.ui_port }}" ]
             timeout: "{{ project.definition.services.s3.healthcheck.timeout }}"
             retries: "{{ project.definition.services.s3.healthcheck.retries }}"
             interval: "{{ project.definition.services.s3.healthcheck.interval }}"
@@ -28,11 +36,11 @@
           ports:
             - "{{ project.definition.services.s3.ui_port }}:{{ project.definition.services.s3.ui_port }}"
             - "{{ project.definition.services.s3.console_port }}:{{ project.definition.services.s3.console_port }}"
-  #          depends_on:
-  #            - vault
+          depends_on:
+            - vault
   register: output
 
 - ansible.builtin.assert:
     that:
-      - "output.services.s3.terraform_s3_1.state.running"
-#      - "output.services.vault.terraform_s3_1.state.running"
+      - "output.services.s3.{{ project.definition.services.s3.container_name }}.state.running"
+      - "output.services.vault.{{ project.definition.services.vault.container_name }}.state.running"

@@ -14,9 +14,19 @@ project:
   definition:
     version: "3.9"
     services:
+      vault:
+        image: "vault"
+        ui_port: 8200
+        cap_add: "IPC_LOCK"
+        restart: "on-failure:5"
+        container_name: "vault"
+        user:
+          id: 1000
+          group: 1000
       s3:
         ui_port: 9001
         console_port: 9000
+        container_name: s3
         restart: "on-failure:5"
         access_key: "minioadmin"
         secret_key: "minioadmin"
