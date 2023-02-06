@@ -9,8 +9,15 @@
         #          image: postgres
         s3:
           image: "{{ project.definition.services.s3.image }}"
+          restart: "{{ project.definition.services.s3.restart }}"
           command: "server /data --console-address ':{{ project.definition.services.s3.ui_port }}'"
           user: "{{ project.definition.services.s3.user.id }}:{{ project.definition.services.s3.user.group }}"
+          healthcheck:
+            test: ["CMD", "curl", "-If", "--cacert", ".minio/certs/public.crt", "{{ project.definition.services.s3.s3_bucket.endpoint_url }}:{{ project.definition.services.s3.ui_port }}"]
+            timeout: "{{ project.definition.services.s3.healthcheck.timeout }}"
+            retries: "{{ project.definition.services.s3.healthcheck.retries }}"
+            interval: "{{ project.definition.services.s3.healthcheck.interval }}"
+            start_period: "{{ project.definition.services.s3.healthcheck.start_period }}"
           environment:
             - "MINIO_ROOT_USER={{ project.definition.services.s3.access_key }}"
             - "MINIO_ROOT_PASSWORD={{ project.definition.services.s3.secret_key }}"

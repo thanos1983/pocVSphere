@@ -17,9 +17,15 @@ project:
       s3:
         ui_port: 9001
         console_port: 9000
-        image: "quay.io/minio/minio"
+        restart: "on-failure:5"
         access_key: "minioadmin"
         secret_key: "minioadmin"
+        image: "quay.io/minio/minio"
+        healthcheck:
+          retries: 1
+          interval: 10s
+          timeout: 10s
+          start_period: 1s
         s3_bucket:
           name: "demo"
           state: present
