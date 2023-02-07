@@ -53,7 +53,7 @@ project:
           group: 1000
         cert:
           size: 4096
-          force: true
+          force: false
           cipher: "auto"
           csr: "public.csr"
           crt: "public.crt"
