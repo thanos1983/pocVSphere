@@ -15,7 +15,7 @@
       ansible.builtin.include_tasks:
         file: docker_compose.yaml
 
-    - name: S3 processes
+    - name: Create S3 Bucket
       ansible.builtin.include_tasks:
         file: s3.yaml
 
