@@ -53,7 +53,8 @@ Sample of manual steps of copying the CA to local approved certificates:
 
 ```shell
 sudo cp /home/<user>/s3DemoDir/certs/public.crt /usr/local/share/ca-certificates/
-sudo update-ca-certificates
+sudo update-ca-certificates --fresh
+sudo dpkg-reconfigure ca-certificates
 ```
 
 After the user should be able to use `terraform init -reconfigure` to allow local CA to be used towards S3 bucket (minio).
@@ -91,26 +92,6 @@ $ ansible-vault encrypt terraform-role/vars/secure-vars.yml
 New Vault password: # manual input
 Confirm New Vault password: # manual input
 ERROR! ansible-vault requires the cryptography library in order to function
-```
-
-The user either has not installed the Python package or the package needs to be reinstalled.
-
-Sample of reinstalling the pip package:
-
-```bash
-$ pip install --upgrade --force-reinstall cryptography
-Defaulting to user installation because normal site-packages is not writeable
-Collecting cryptography
-  Downloading cryptography-39.0.0-cp36-abi3-manylinux_2_28_x86_64.whl (4.2 MB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.2/4.2 MB 9.8 MB/s eta 0:00:00
-Collecting cffi>=1.12
-  Downloading cffi-1.15.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (462 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 462.6/462.6 kB 10.4 MB/s eta 0:00:00
-Collecting pycparser
-  Downloading pycparser-2.21-py2.py3-none-any.whl (118 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 118.7/118.7 kB 7.6 MB/s eta 0:00:00
-Installing collected packages: pycparser, cffi, cryptography
-Successfully installed cffi-1.15.1 cryptography-39.0.0 pycparser-2.21
 ```
 
 Then simply encode the file sample:

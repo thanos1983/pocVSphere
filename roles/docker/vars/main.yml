@@ -45,7 +45,7 @@ project:
           validate_certs: true
           requester_pays: false
           permission: "private"
-          endpoint_url: "https://localhost"
+          endpoint_url: "https://www"
           tags:
             value: "demo bucket"
         user:
@@ -54,21 +54,32 @@ project:
         cert:
           size: 4096
           force: false
+          format: "auto"
           cipher: "auto"
+          acme_version: 2
+          terms_agreed: yes
           csr: "public.csr"
-          crt: "public.crt"
           key: "private.key"
+          crt: "public.crt"
           country_name: "DK"
           passphrase: "nnit"
+          remaining_days: 365
+          challenge: "http-01"
           provider: "selfsigned"
           organization_name: "NNIT"
+          common_name: "sample.com"
+          chain_dest: "intermediate.crt"
+          fullchain_dest: "fullchain.crt"
+          challenge_dir: ".well-known/acme-challenge"
           email_address: "demo@nnit.com"
+          acme_directory: "https://acme-v02.api.letsencrypt.org/directory"
           subject_alt_name:
             - "localhost"
-            - "minio.example.net"
+            - "sample.com"
         dirs:
           mode: "0755"
+          data: "data"
           recurse: true
+          certs: "certs"
           state: directory
-          data: "s3DemoDir/data"
-          certs: "s3DemoDir/certs"
+          dir: "s3DemoDir"
