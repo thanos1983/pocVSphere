@@ -5,7 +5,7 @@ from diagrams.generic import virtualization, os
 from diagrams.aws.storage import SimpleStorageServiceS3
 from diagrams.onprem import iac, vcs, security, container, compute
 
-with Diagram("High Level Design - Provisioning VMs", show=False, filename="hldVm"):
+with Diagram("High Level Design - Provisioning VMs", show=True, filename="hldVm"):
     adoServer = devops.Devops("ADO Server")
     adoPipeline = devops.Pipelines("ADO Pipeline(s)")
 
