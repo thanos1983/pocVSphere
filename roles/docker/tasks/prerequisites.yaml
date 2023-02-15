@@ -2,8 +2,11 @@
 # tasks file for roles/docker prerequisites
 - name: Create a directories for minio data and certs if they do not exist
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/{{ item.value }}"
+    path: "{{ ansible_env.HOME }}/{{ item }}"
     mode: "{{ project.definition.services.s3.dirs.mode }}"
     state: "{{ project.definition.services.s3.dirs.state }}"
     recurse: "{{ project.definition.services.s3.dirs.recurse }}"
-  with_dict: "{{ project.definition.services.s3.dirs }}"
+  loop:
+    - "{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.data }}"
+    - "{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}"
+#    - "{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.challenge_dir }}"
