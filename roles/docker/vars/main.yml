@@ -14,15 +14,62 @@ project:
   definition:
     version: "3.9"
     services:
+      cert:
+        mode: "0755"
+        recurse: true
+        size: 4096
+        force: false
+        dir: "demoDir"
+        format: "auto"
+        cipher: "auto"
+        acme_version: 2
+        state: directory
+        terms_agreed: yes
+        csr: "public.csr"
+        crt: "public.crt"
+        key: "private.key"
+        country_name: "DK"
+        remaining_days: 365
+        challenge: "http-01"
+        provider: "selfsigned"
+        passphrase: "passphrase"
+        common_name: "sample.com"
+        chain_dest: "intermediate.crt"
+        fullchain_dest: "fullchain.crt"
+        organization_name: "ORGANIZATION"
+        email_address: "demo@mydomain.com"
+        challenge_dir: ".well-known/acme-challenge"
+        acme_directory: "https://acme-v02.api.letsencrypt.org/directory"
+        subject_alt_name:
+          - "localhost"
+          - "sample.com"
+      nginx:
+        dirs:
+          certs: "certs"
+          dir: "nginxDemoDir"
       vault:
-        image: "vault"
         ui_port: 8200
+        image: "vault"
+        vault_port: 8201
         cap_add: "IPC_LOCK"
         restart: "on-failure:5"
         container_name: "vault"
+        secret_username: "vaultadmin"
+        secret_password: "vaultadmin"
         user:
-          id: 1000
+          id: 100
           group: 1000
+        healthcheck:
+          retries: 1
+          interval: 10s
+          timeout: 10s
+          start_period: 1s
+        dirs:
+          logs: "logs"
+          file: "file"
+          certs: "certs"
+          config: "config"
+          dir: "vaultDemoDir"
       s3:
         ui_port: 9001
         console_port: 9000
@@ -51,35 +98,7 @@ project:
         user:
           id: 1000
           group: 1000
-        cert:
-          size: 4096
-          force: false
-          format: "auto"
-          cipher: "auto"
-          acme_version: 2
-          terms_agreed: yes
-          csr: "public.csr"
-          key: "private.key"
-          crt: "public.crt"
-          country_name: "DK"
-          passphrase: "nnit"
-          remaining_days: 365
-          challenge: "http-01"
-          provider: "selfsigned"
-          organization_name: "NNIT"
-          common_name: "sample.com"
-          chain_dest: "intermediate.crt"
-          fullchain_dest: "fullchain.crt"
-          challenge_dir: ".well-known/acme-challenge"
-          email_address: "demo@nnit.com"
-          acme_directory: "https://acme-v02.api.letsencrypt.org/directory"
-          subject_alt_name:
-            - "localhost"
-            - "sample.com"
         dirs:
-          mode: "0755"
           data: "data"
-          recurse: true
           certs: "certs"
-          state: directory
           dir: "s3DemoDir"

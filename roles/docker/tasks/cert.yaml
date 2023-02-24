@@ -2,30 +2,57 @@
 # tasks file for roles/docker cert
 - name: Generate an OpenSSL private key with the default values (4096 bits, RSA)
   community.crypto.openssl_privatekey:
-    size: "{{ project.definition.services.s3.cert.size }}"
-    force: "{{ project.definition.services.s3.cert.force }}"
-    cipher: "{{ project.definition.services.s3.cert.cipher }}"
-    passphrase: "{{ project.definition.services.s3.cert.passphrase }}"
-    path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.key }}"
+    size: "{{ project.definition.services.cert.size }}"
+#    force: "{{ project.definition.services.cert.force }}"
+#    cipher: "{{ project.definition.services.cert.cipher }}"
+#    passphrase: "{{ project.definition.services.cert.passphrase }}"
+    path: "{{ role_path }}/files/{{ project.definition.services.cert.key }}"
 
 - name: Generate an OpenSSL CSR with subjectAltName extension with dynamic list
   community.crypto.openssl_csr:
     common_name: "{{ ansible_hostname }}"
-    force: "{{ project.definition.services.s3.cert.force }}"
-    country_name: "{{ project.definition.services.s3.cert.country_name }}"
-    email_address: "{{ project.definition.services.s3.cert.email_address }}"
-    privatekey_passphrase: "{{ project.definition.services.s3.cert.passphrase }}"
+    force: "{{ project.definition.services.cert.force }}"
+    country_name: "{{ project.definition.services.cert.country_name }}"
+    email_address: "{{ project.definition.services.cert.email_address }}"
+    path: "{{ role_path }}/files/{{ project.definition.services.cert.csr }}"
+#    privatekey_passphrase: "{{ project.definition.services.cert.passphrase }}"
+    organization_name: "{{ project.definition.services.cert.organization_name }}"
     subject_alt_name: "{{ item.value | map('regex_replace', '^', 'DNS:') | list }}"
-    organization_name: "{{ project.definition.services.s3.cert.organization_name }}"
-    path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.csr }}"
-    privatekey_path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.key }}"
+    privatekey_path: "{{ role_path }}/files/{{ project.definition.services.cert.key }}"
   with_dict:
-    dns_server: "{{ project.definition.services.s3.cert.subject_alt_name }}"
+    dns_server: "{{ project.definition.services.cert.subject_alt_name }}"
 
 - name: Generate a Self Signed OpenSSL certificate
   community.crypto.x509_certificate:
-    provider: "{{ project.definition.services.s3.cert.provider }}"
-    privatekey_passphrase: "{{ project.definition.services.s3.cert.passphrase }}"
-    path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.crt }}"
-    csr_path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.csr }}"
-    privatekey_path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.key }}"
+    provider: "{{ project.definition.services.cert.provider }}"
+    path: "{{ role_path }}/files/{{ project.definition.services.cert.crt }}"
+#    privatekey_passphrase: "{{ project.definition.services.cert.passphrase }}"
+    csr_path: "{{ role_path }}/files/{{ project.definition.services.cert.csr }}"
+    privatekey_path: "{{ role_path }}/files/{{ project.definition.services.cert.key }}"
+
+- name: Copy Self Signed OpenSSL certificate key
+  ansible.builtin.copy:
+    dest: "{{ ansible_env.HOME }}/{{ item }}"
+    src: "{{ role_path }}/files/{{ project.definition.services.cert.key }}"
+  with_items:
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}"
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.nginx.dirs.dir }}/{{ project.definition.services.nginx.dirs.certs }}"
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dirs.dir }}/{{ project.definition.services.vault.dirs.certs }}"
+
+- name: Copy Self Signed OpenSSL certificate crt
+  ansible.builtin.copy:
+    dest: "{{ ansible_env.HOME }}/{{ item }}"
+    src: "{{ role_path }}/files/{{ project.definition.services.cert.crt }}"
+  with_items:
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}"
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.nginx.dirs.dir }}/{{ project.definition.services.nginx.dirs.certs }}"
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dirs.dir }}/{{ project.definition.services.vault.dirs.certs }}"
+
+- name: Copy Self Signed OpenSSL certificate csr
+  ansible.builtin.copy:
+    dest: "{{ ansible_env.HOME }}/{{ item }}"
+    src: "{{ role_path }}/files/{{ project.definition.services.cert.csr }}"
+  with_items:
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}"
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.nginx.dirs.dir }}/{{ project.definition.services.nginx.dirs.certs }}"
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dirs.dir }}/{{ project.definition.services.vault.dirs.certs }}"

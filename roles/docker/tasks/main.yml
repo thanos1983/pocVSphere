@@ -2,26 +2,30 @@
 # tasks file for roles/docker
 - name: Block for infrastructure tasks
   block:
-#    - name: Prerequisites steps for Docker
-#      ansible.builtin.include_tasks:
-#        file: prerequisites.yaml
-#
-#    - name: Prepare Self Signed Certificate(s)
-#      ansible.builtin.include_tasks:
-#        file: cert.yaml
-#
+    - name: Prerequisites steps for Docker
+      ansible.builtin.include_tasks:
+        file: prerequisites.yaml
+
+    - name: Prepare Self Signed Certificate(s)
+      ansible.builtin.include_tasks:
+        file: cert.yaml
+
+    - name: Config for Vault
+      ansible.builtin.include_tasks:
+        file: config.yaml
+
     - name: Docker compose task
       ansible.builtin.include_tasks:
         file: docker_compose.yaml
 
-    - name: Create S3 Bucket
-      ansible.builtin.include_tasks:
-        file: s3.yaml
+#    - name: Create S3 Bucket
+#      ansible.builtin.include_tasks:
+#        file: s3.yaml
 
-    - name: Prepare Terraform Version file
-      ansible.builtin.include_tasks:
-        file: version.yaml
+#    - name: Prepare Terraform Version file
+#      ansible.builtin.include_tasks:
+#        file: version.yaml
 #  always:
 #    - name: Remove Sensitive data (CRT)
 #      ansible.builtin.include_tasks:
-#        file: cert.yaml
+#        file: cleanup.yaml

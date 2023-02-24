@@ -5,7 +5,7 @@
     size: "{{ project.definition.services.s3.cert.size }}"
     force: "{{ project.definition.services.s3.cert.force }}"
     format: "{{ project.definition.services.s3.cert.format }}"
-    path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.key }}"
+    path: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.key }}"
 
 - name: Generate an OpenSSL CSR with subjectAltName extension with dynamic list
   community.crypto.openssl_csr:
@@ -15,8 +15,8 @@
     email_address: "{{ project.definition.services.s3.cert.email_address }}"
     subject_alt_name: "{{ item.value | map('regex_replace', '^', 'DNS:') | list }}"
     organization_name: "{{ project.definition.services.s3.cert.organization_name }}"
-    path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.csr }}"
-    privatekey_path: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.key }}"
+    path: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.csr }}"
+    privatekey_path: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.key }}"
   with_dict:
     dns_server: "{{ project.definition.services.s3.cert.subject_alt_name }}"
 
@@ -27,15 +27,15 @@
     terms_agreed: "{{ project.definition.services.s3.cert.terms_agreed }}"
     acme_directory: "{{ project.definition.services.s3.cert.acme_directory }}"
     remaining_days: "{{ project.definition.services.s3.cert.remaining_days }}"
-    csr: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.csr }}"
-    dest: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.crt }}"
-    account_key_content: "{{ lookup('file', '{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.key }}') }}"
+    csr: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.csr }}"
+    dest: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.crt }}"
+    account_key_content: "{{ lookup('file', '{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.key }}') }}"
   register: lets_encrypt_challenge
 
 - name: Perform the necessary steps to fulfill the challenge if condition is met.
   ansible.builtin.copy:
     content: "{{ lets_encrypt_challenge['challenge_data'][project.definition.services.s3.cert.common_name][project.definition.services.s3.cert.challenge]['resource_value'] }}"
-    dest: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ lets_encrypt_challenge['challenge_data'][project.definition.services.s3.cert.common_name][project.definition.services.s3.cert.challenge]['resource'] }}"
+    dest: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ lets_encrypt_challenge['challenge_data'][project.definition.services.s3.cert.common_name][project.definition.services.s3.cert.challenge]['resource'] }}"
   when: lets_encrypt_challenge is changed and project.definition.services.s3.cert.common_name in lets_encrypt_challenge['challenge_data']
 
 # TODO Launch NGINX WEB SERVER for Validation
@@ -45,11 +45,11 @@
     data: "{{ lets_encrypt_challenge }}"
     acme_version: "{{ project.definition.services.s3.cert.acme_version }}"
     acme_directory: "{{ project.definition.services.s3.cert.acme_directory }}"
-    csr: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.csr }}"
-    dest: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.crt }}"
-    account_key_src: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.key }}"
-    chain_dest: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.chain_dest }}"
-    fullchain_dest: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.fullchain_dest }}"
+    csr: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.csr }}"
+    dest: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.crt }}"
+    account_key_src: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.key }}"
+    chain_dest: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.chain_dest }}"
+    fullchain_dest: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.fullchain_dest }}"
 
 #- name: Let the challenge be validated and retrieve the cert and intermediate certificate
 #  community.crypto.acme_certificate:
@@ -60,7 +60,7 @@
 #    account_email: "{{ project.definition.services.s3.cert.email_address }}"
 #    acme_directory: "{{ project.definition.services.s3.cert.acme_directory }}"
 #    remaining_days: "{{ project.definition.services.s3.cert.remaining_days }}"
-#    src: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.csr }}"
-#    cert: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.crt }}"
-#    account_key_src: "{{ ansible_env.HOME }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.key }}') }}"
+#    src: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.csr }}"
+#    cert: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.crt }}"
+#    account_key_src: "{{ ansible_env.HOME }}/{{ project.definition.services.certs.dir }}/{{ project.definition.services.certs.certs }}/{{ project.definition.services.s3.cert.key }}') }}"
 #  when: sample_com_challenge is changed

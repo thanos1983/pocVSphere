@@ -1,0 +1,14 @@
+- name: Template a file to vault config dir
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0644"
+  with_items:
+    - { src: "vault_config.hcl.j2", dest: "{{ ansible_env.HOME }}/{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dirs.dir }}/{{ project.definition.services.vault.dirs.config }}/vault_config.hcl" }
+
+- name: Copy config file to vault config dir
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ ansible_env.HOME }}/{{ item.dest }}"
+  with_items:
+    - { src: "terraform-policy.hcl", dest: "{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dirs.dir }}/{{ project.definition.services.vault.dirs.config }}" }

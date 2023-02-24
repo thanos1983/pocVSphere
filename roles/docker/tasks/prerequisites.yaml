@@ -3,10 +3,14 @@
 - name: Create a directories for minio data and certs if they do not exist
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/{{ item }}"
-    mode: "{{ project.definition.services.s3.dirs.mode }}"
-    state: "{{ project.definition.services.s3.dirs.state }}"
-    recurse: "{{ project.definition.services.s3.dirs.recurse }}"
+    mode: "{{ project.definition.services.cert.mode }}"
+    state: "{{ project.definition.services.cert.state }}"
+    recurse: "{{ project.definition.services.cert.recurse }}"
   loop:
-    - "{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.data }}"
-    - "{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}"
-#    - "{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}/{{ project.definition.services.s3.cert.challenge_dir }}"
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.data }}"
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.s3.dirs.dir }}/{{ project.definition.services.s3.dirs.certs }}"
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dirs.dir }}/{{ project.definition.services.vault.dirs.logs }}"
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dirs.dir }}/{{ project.definition.services.vault.dirs.file }}"
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.nginx.dirs.dir }}/{{ project.definition.services.nginx.dirs.certs }}"
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dirs.dir }}/{{ project.definition.services.vault.dirs.certs }}"
+    - "{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dirs.dir }}/{{ project.definition.services.vault.dirs.config }}"

@@ -1,0 +1,15 @@
+listener "tcp" {
+  address           = "0.0.0.0:{{ project.definition.services.vault.vault_port }}"
+  tls_disable       = 0
+  tls_key_file      = "/vault/certs/private.key"
+  tls_cert_file     = "/vault/certs/public.crt"
+  tls_min_version   = "tls12"
+}
+
+storage "file" {
+  path = "/vault/file/"
+}
+
+# api_addr = "https://0.0.0.0:{{ project.definition.services.vault.vault_port }}"
+cluster_addr = "https://0.0.0.0:{{ project.definition.services.vault.ui_port }}"
+ui = true
