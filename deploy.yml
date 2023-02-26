@@ -4,9 +4,13 @@
   any_errors_fatal: true
 
   roles:
+    - role: test
+      tags: [ test ]
     - role: ping
       tags: [ ping ]
-    - role: prerequisites
-      tags: [ prerequisites ]
     - role: docker
       tags: [ docker ]
+    - role: prerequisites
+      tags: [ prerequisites ]
+    - role: infrastructure
+      tags: [ infrastructure ]

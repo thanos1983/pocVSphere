@@ -14,8 +14,8 @@
           cap_add:
             - "{{ project.definition.services.vault.cap_add }}"
           ports:
-            - "{{ project.definition.services.vault.vault_port }}:{{ project.definition.services.vault.vault_port }}"
-            - "{{ project.definition.services.vault.api_port }}:{{ project.definition.services.vault.api_port }}"
+            - "{{ project.definition.services.vault.vault_api_port }}:{{ project.definition.services.vault.vault_api_port }}"
+            - "{{ project.definition.services.vault.vault_console_port }}:{{ project.definition.services.vault.vault_console_port }}"
           healthcheck:
             timeout: "{{ project.definition.services.vault.healthcheck.timeout }}"
             retries: "{{ project.definition.services.vault.healthcheck.retries }}"
@@ -23,21 +23,21 @@
             start_period: "{{ project.definition.services.vault.healthcheck.start_period }}"
           environment:
             - 'VAULT_TOKEN={{ project.definition.services.vault.secret_password }}'
-            - 'VAULT_ADDR=https://0.0.0.0:{{ project.definition.services.vault.api_port }}'
+            - 'VAULT_ADDR=https://0.0.0.0:{{ project.definition.services.vault.vault_api_port }}'
             - 'VAULT_DEV_ROOT_TOKEN_ID={{ project.definition.services.vault.secret_password }}'
           volumes:
-            - "{{ ansible_env.HOME }}/{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dir }}/{{ project.definition.services.vault.dirs.logs }}:/vault/logs"
-            - "{{ ansible_env.HOME }}/{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dir }}/{{ project.definition.services.vault.dirs.file }}:/vault/file"
-            - "{{ ansible_env.HOME }}/{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dir }}/{{ project.definition.services.vault.dirs.certs }}:/vault/certs"
-            - "{{ ansible_env.HOME }}/{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dir }}/{{ project.definition.services.vault.dirs.config }}:/vault/config"
+            - "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.0 }}:/vault/logs"
+            - "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.1 }}:/vault/file"
+            - "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.2 }}:/vault/config"
+            - "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.3 }}:/vault/certs"
         s3:
           image: "{{ project.definition.services.s3.image }}"
           restart: "{{ project.definition.services.s3.restart }}"
           container_name: "{{ project.definition.services.s3.container_name }}"
-          command: "server /data --console-address ':{{ project.definition.services.s3.vault_port }}'"
-          user: "{{ project.definition.services.s3.user.id }}:{{ project.definition.services.s3.user.group }}"
+          command: "server /data --certs-dir .minio/certs --console-address ':{{ project.definition.services.s3.s3_console_port }}'"
+          # user: "{{ project.definition.services.s3.user.id }}:{{ project.definition.services.s3.user.group }}"
           healthcheck:
-            test: [ "CMD", "curl", "-If", "--cacert", ".minio/certs/{{ project.definition.services.cert.crt }}", "https://localhost:{{ project.definition.services.s3.vault_port }}" ]
+            test: [ "CMD", "curl", "-If", "--cacert", ".minio/certs/{{ prerequisites.cert.crt }}", "https://localhost:{{ project.definition.services.s3.s3_console_port }}" ]
             timeout: "{{ project.definition.services.s3.healthcheck.timeout }}"
             retries: "{{ project.definition.services.s3.healthcheck.retries }}"
             interval: "{{ project.definition.services.s3.healthcheck.interval }}"
@@ -45,15 +45,14 @@
           environment:
             - "MINIO_ROOT_USER={{ project.definition.services.s3.access_key }}"
             - "MINIO_ROOT_PASSWORD={{ project.definition.services.s3.secret_key }}"
-          #            - "MINIO_CERT_PASSWD={{ project.definition.services.cert.passphrase }}"
+          # - "MINIO_CERT_PASSWD={{ project.definition.services.cert.passphrase }}"
+            - "MINIO_STORAGE_CLASS_STANDARD={{ project.definition.services.s3.storage_class }}"
           volumes:
-            - "{{ ansible_env.HOME }}/{{ project.definition.services.cert.dir }}/{{ project.definition.services.s3.dir }}/{{ project.definition.services.s3.dirs.data }}:/data"
-            - "{{ ansible_env.HOME }}/{{ project.definition.services.cert.dir }}/{{ project.definition.services.s3.dir }}/{{ project.definition.services.s3.dirs.certs }}:/.minio/certs"
+            - "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.1.name }}/{{ prerequisites.project.1.dirs.0 }}:/data"
+            - "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.1.name }}/{{ prerequisites.project.1.dirs.1 }}:/.minio/certs"
           ports:
-            - "{{ project.definition.services.s3.vault_port }}:{{ project.definition.services.s3.vault_port }}"
-            - "{{ project.definition.services.s3.console_port }}:{{ project.definition.services.s3.console_port }}"
-          depends_on:
-            - vault
+            - "{{ project.definition.services.s3.s3_api_port }}:{{ project.definition.services.s3.s3_api_port }}"
+            - "{{ project.definition.services.s3.s3_console_port }}:{{ project.definition.services.s3.s3_console_port }}"
   register: output
 
 - ansible.builtin.assert:

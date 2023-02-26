@@ -15,10 +15,6 @@
     file_type: "{{ dirConfigurations.file_type }}"
   register: collected_files
 
-- name: Debug
-  debug:
-    var: collected_files.files
-
 - name: Cleanup sensitive data (certs)
   ansible.builtin.file:
     state: absent

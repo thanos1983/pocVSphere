@@ -2,6 +2,7 @@
 # tasks file for roles/docker cert
 - name: Generate an OpenSSL private key with the default values (4096 bits, RSA)
   community.crypto.openssl_privatekey:
+    mode: "{{ cert.mode }}"
     size: "{{ cert.size }}"
     # force: "{{ cert.force }}"
     # cipher: "{{ cert.cipher }}"

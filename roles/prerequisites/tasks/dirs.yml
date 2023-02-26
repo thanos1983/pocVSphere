@@ -2,8 +2,8 @@
 # tasks file for roles/prerequisites dirs
 - name: Create needed directories
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/{{ dirConfigurations.parentDir }}/{{ item.0.name }}/{{ item.1 }}"
     mode: "{{ dirConfigurations.mode }}"
     state: "{{ dirConfigurations.state }}"
     recurse: "{{ dirConfigurations.recurse }}"
+    path: "{{ ansible_env.HOME }}/{{ dirConfigurations.parentDir }}/{{ item.0.name }}/{{ item.1 }}"
   loop: "{{ project | subelements('dirs') }}"

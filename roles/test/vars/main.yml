@@ -1,8 +1,8 @@
 ---
-# vars file for roles/prerequisites
+# vars file for roles/test
 dirConfigurations:
-  size: 4096
   mode: "0755"
+  size: 4096
   recurse: true
   file_type: "any"
   remote_src: true
@@ -12,7 +12,6 @@ dirConfigurations:
   parentDir: "demoDir"
 cert:
   size: 4096
-  mode: "0644"
   force: false
   cipher: "auto"
   csr: "public.csr"
@@ -26,20 +25,23 @@ cert:
   email_address: "demo@mydomain.com"
   subject_alt_name:
     - "IP:0.0.0.0"
-    - "IP:127.0.0.1"
-    - "DNS:localhost"
-# Do not modify sequence
+    - "DNS:sample.com"
+    - "DNS:local.sample.org"
+parentDir: "demoDirs"
 project:
-  - name: vaultDemoDir
+  vault:
+    basedir: "vaultDemoDir"
     dirs:
-      - "logs"
-      - "file"
-      - "config"
-      - "{{ dirConfigurations.certsDir }}"
-  - name: s3DemoDir
+      logs: "logs"
+      file: "file"
+      certs: "certs"
+      config: "config"
+  s3:
+    basedir: "s3DemoDir"
     dirs:
-      - "data"
-      - "{{ dirConfigurations.certsDir }}"
-  - name: nginxDemoDir
-    dirs:
-      - "{{ dirConfigurations.certsDir }}"
+      data: "data"
+      certs: "certs"
+nginx:
+  basedir: "nginxDemoDir"
+  dirs:
+    certs: "certs"

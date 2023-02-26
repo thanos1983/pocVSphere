@@ -1,0 +1,43 @@
+---
+# tasks file for roles/test
+#- name: Define dirs as empty list
+#  set_fact: "{{ dirs | default([]) }}"
+
+- name: Prepare base dir string
+  set_fact:
+    baseDir: "\
+    {{ baseDir | default([]) }} + \
+    [ '{{ parentDir }}/{{ item.key }}/ }}' ]"
+  with_dict: "{{ project }}"
+
+#- name: Prepare rest of dirs for iteration
+#  set_fact:
+#    dirs: "\
+#    {{ dirs | default([]) }} + \
+#    [ '{{ baseDir }}/{{ item.key }}/ }}' ]"
+#  with_dict: "{{ project }}"
+
+#- name: Debug
+#  ansible.builtin.debug:
+#    msg: "{{ item }}"
+#  with_items: "{{ baseDir }}"
+
+#- name: Debug
+#  ansible.builtin.debug:
+#    msg: "{{ item.key }}"
+#  with_dict: "{{ project }}"
+#- Name: Expand mount dirs for later use
+#  set_fact:
+#    # Sets a list of mount directories
+#    dirs: "\
+#      {{ dirs | default([]) }} + \
+#      [ '{{ mymounts['basedir'] }}/{{ item['name'] }}' ]"
+#  with_items: "{{ project }}"
+
+- name: Print return information from the previous task
+  ansible.builtin.debug:
+    msg: "{{ item.basedir }}"
+  with_items:
+    - "{{ project.s3 }}"
+    - "{{ project.vault }}"
+#    - "{{ project.vault }}"

@@ -2,6 +2,6 @@
   ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    mode: "0644"
+    mode: "{{ project.definition.services.s3.mode }}"
   with_items:
-    - { src: "vault_config.hcl.j2", dest: "{{ ansible_env.HOME }}/{{ project.definition.services.cert.dir }}/{{ project.definition.services.vault.dir }}/{{ project.definition.services.vault.dirs.config }}/vault_config.hcl" }
+    - { src: "vault_config.hcl.j2", dest: "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.2 }}/vault_config.hcl" }
