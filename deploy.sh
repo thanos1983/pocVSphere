@@ -11,8 +11,8 @@ function deploy() {
 
   env=${env:="dev"}
   vault_token=${vault_token:="myToken"}
-  ansible_tags=${ansible_tags:="docker"}
   ansible_user=${ansible_user:="tinyos"}
+  ansible_tags=${ansible_tags:="prerequisites"}
   ansible_skip_tags=${ansible_skip_tags:="never"}
   target_hosts_group=${target_hosts_group:="local"}
   ansible_password=${ansible_password:="technicalPassword"}

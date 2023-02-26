@@ -4,7 +4,7 @@
 vault server -config /vault/config/vault_config.hcl
 
 # Export values
-export VAULT_ADDR='https://0.0.0.0:{{ project.definition.services.vault.vault_port }}'
+export VAULT_ADDR='https://0.0.0.0:{{ project.definition.services.vault.api_port }}'
 export VAULT_SKIP_VERIFY='true'
 
 # Parse unsealed keys

@@ -1,0 +1,43 @@
+---
+# vars file for roles/prerequisites
+dirConfigurations:
+  mode: "0755"
+  size: 4096
+  recurse: true
+  file_type: "any"
+  remote_src: true
+  certsDir: "certs"
+  state: "directory"
+  directory_mode: true
+  parentDir: "demoDir"
+cert:
+  size: 4096
+  force: false
+  cipher: "auto"
+  csr: "public.csr"
+  crt: "public.crt"
+  key: "private.key"
+  country_name: "DK"
+  provider: "selfsigned"
+  passphrase: "passphrase"
+  common_name: "sample.com"
+  organization_name: "ORGANIZATION"
+  email_address: "demo@mydomain.com"
+  subject_alt_name:
+    - "IP:0.0.0.0"
+    - "DNS:sample.com"
+    - "DNS:local.sample.org"
+project:
+  - name: vaultDemoDir
+    dirs:
+      - "logs"
+      - "file"
+      - "config"
+      - "{{ dirConfigurations.certsDir }}"
+  - name: s3DemoDir
+    dirs:
+      - "data"
+      - "{{ dirConfigurations.certsDir }}"
+  - name: nginxDemoDir
+    dirs:
+      - "{{ dirConfigurations.certsDir }}"

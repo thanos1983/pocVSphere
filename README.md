@@ -20,6 +20,12 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 For ease of use it is recommended that the user will also apply the [Docker Engine post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/).
 
+The user if desires to generate Let's Encrypt certificates they need to follow the steps bellow:
+- sudo apt install snapd # Install snapd
+- sudo snap install core; sudo snap refresh core # Ensure you have the latest snapd version installed
+- sudo snap install --classic certbot # Install Certbot with snapd
+- sudo ln -s /snap/bin/certbot /usr/bin/certbot # Create a symlink to ensure Certbot runs
+
 ### Packages Ansible
 
 The user needs to install the python package for encryption / descryption and also aiohttp for vmware. Sample:

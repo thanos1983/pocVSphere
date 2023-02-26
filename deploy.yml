@@ -6,5 +6,7 @@
   roles:
     - role: ping
       tags: [ ping ]
+    - role: prerequisites
+      tags: [ prerequisites ]
     - role: docker
       tags: [ docker ]

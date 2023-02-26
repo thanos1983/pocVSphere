@@ -1,0 +1,31 @@
+---
+# tasks file for roles/docker cert
+- name: Generate an OpenSSL private key with the default values (4096 bits, RSA)
+  community.crypto.openssl_privatekey:
+    size: "{{ cert.size }}"
+    # force: "{{ cert.force }}"
+    # cipher: "{{ cert.cipher }}"
+    # passphrase: "{{ cert.passphrase }}"
+    path: "{{ role_path }}/files/{{ cert.key }}"
+
+- name: Generate an OpenSSL CSR with subjectAltName extension with dynamic list
+  community.crypto.openssl_csr:
+    force: "{{ cert.force }}"
+    common_name: "{{ ansible_hostname }}"
+    country_name: "{{ cert.country_name }}"
+    email_address: "{{ cert.email_address }}"
+    subject_alt_name: "{{ item.value | list }}"
+    path: "{{ role_path }}/files/{{ cert.csr }}"
+    # privatekey_passphrase: "{{ cert.passphrase }}"
+    organization_name: "{{ cert.organization_name }}"
+    privatekey_path: "{{ role_path }}/files/{{ cert.key }}"
+  with_dict:
+    dns_server: "{{ cert.subject_alt_name }}"
+
+- name: Generate a Self Signed OpenSSL certificate
+  community.crypto.x509_certificate:
+    provider: "{{ cert.provider }}"
+    path: "{{ role_path }}/files/{{ cert.crt }}"
+    # privatekey_passphrase: "{{ cert.passphrase }}"
+    csr_path: "{{ role_path }}/files/{{ cert.csr }}"
+    privatekey_path: "{{ role_path }}/files/{{ cert.key }}"

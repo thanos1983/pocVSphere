@@ -16,9 +16,9 @@ project:
     services:
       cert:
         mode: "0755"
-        recurse: true
         size: 4096
         force: false
+        recurse: true
         dir: "demoDir"
         format: "auto"
         cipher: "auto"
@@ -41,16 +41,14 @@ project:
         challenge_dir: ".well-known/acme-challenge"
         acme_directory: "https://acme-v02.api.letsencrypt.org/directory"
         subject_alt_name:
-          - "localhost"
-          - "sample.com"
-      nginx:
-        dirs:
-          certs: "certs"
-          dir: "nginxDemoDir"
+          - "IP:0.0.0.0"
+          - "DNS:sample.com"
+          - "DNS:local.sample.org"
       vault:
-        ui_port: 8200
         image: "vault"
-        vault_port: 8201
+        api_port: 8201
+        vault_port: 8200
+        dir: "vaultDemoDir"
         cap_add: "IPC_LOCK"
         restart: "on-failure:5"
         container_name: "vault"
@@ -69,9 +67,9 @@ project:
           file: "file"
           certs: "certs"
           config: "config"
-          dir: "vaultDemoDir"
       s3:
-        ui_port: 9001
+        dir: "s3DemoDir"
+        vault_port: 9001
         console_port: 9000
         container_name: s3
         restart: "on-failure:5"
@@ -101,4 +99,3 @@ project:
         dirs:
           data: "data"
           certs: "certs"
-          dir: "s3DemoDir"

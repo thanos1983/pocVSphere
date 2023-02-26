@@ -1,0 +1,13 @@
+---
+# tasks file for roles/prerequisites main
+- name: Create directories
+  ansible.builtin.include_tasks:
+    file: dirs.yml
+
+- name: Create certificate(s)
+  ansible.builtin.include_tasks:
+    file: cert.yml
+
+- name: Distribute certificate(s)
+  ansible.builtin.include_tasks:
+    file: distribute.yml

@@ -1,0 +1,26 @@
+---
+# tasks file for roles/prerequisites distribute
+- name: Copy certificates to all dirs
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/"
+    remote_src: "{{ dirConfigurations.remote_src }}"
+    directory_mode: "{{ dirConfigurations.directory_mode }}"
+    dest: "{{ ansible_env.HOME }}/{{ dirConfigurations.parentDir }}/{{ item.0.name }}/{{ dirConfigurations.certsDir }}/"
+  loop: "{{ project | subelements('dirs') }}"
+
+- name: List files to remove
+  ansible.builtin.find:
+    paths: "{{ role_path }}/files/"
+    recurse: "{{ dirConfigurations.recurse }}"
+    file_type: "{{ dirConfigurations.file_type }}"
+  register: collected_files
+
+- name: Debug
+  debug:
+    var: collected_files.files
+
+- name: Cleanup sensitive data (certs)
+  ansible.builtin.file:
+    state: absent
+    path: "{{ item.path }}"
+  with_items: "{{ collected_files.files }}"

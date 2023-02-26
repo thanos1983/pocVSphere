@@ -6,9 +6,9 @@
       ansible.builtin.include_tasks:
         file: prerequisites.yaml
 
-    - name: Prepare Self Signed Certificate(s)
+    - name: Prepare Certificate(s)
       ansible.builtin.include_tasks:
-        file: cert.yaml
+        file: cert.yml
 
     - name: Config for Vault
       ansible.builtin.include_tasks:
