@@ -1,0 +1,13 @@
+---
+# tasks file for roles/docker docker_container
+#- name: Run command(s) to - {{ project.definition.services.s3.container_name }}
+#  community.docker.docker_container_exec:
+#    command: "{{ item.s3 }}"
+#    container: "{{ project.definition.services.s3.container_name }}"
+#  with_items: "{{ container_commands.s3 }}"
+
+- name: Run command(s) to - {{ project.definition.services.vault.container_name }}
+  community.docker.docker_container_exec:
+    command: "{{ item }}"
+    container: "{{ project.definition.services.vault.container_name }}"
+  with_items: "{{ container_commands.vault }}"

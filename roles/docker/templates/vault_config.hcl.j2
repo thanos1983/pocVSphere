@@ -1,5 +1,6 @@
 listener "tcp" {
-  address           = "0.0.0.0:{{ project.definition.services.vault.vault_api_port }}"
+  # on dev environment run with api port, on prod with "vault_console_port"
+  address           = "[::]:{{ project.definition.services.vault.vault_api_port }}"
   tls_disable       = 0
   tls_key_file      = "/vault/certs/private.key"
   tls_cert_file     = "/vault/certs/public.crt"
@@ -10,8 +11,13 @@ storage "file" {
   path = "/vault/file/"
 }
 
-api_addr = "https://0.0.0.0:{{ project.definition.services.vault.vault_console_port }}"
-cluster_addr = "https://0.0.0.0:{{ project.definition.services.vault.vault_api_port }}"
+disable_mlock = true
+
+api_addr = "http://0.0.0.0:{{ project.definition.services.vault.vault_api_port }}"
+# cluster_addr = "https://0.0.0.0:{{ project.definition.services.vault.vault_api_port }}"
+# usually one port number higher than address for cluster address. Not needed for dev environment
+
 default_lease_ttl = "168h"
 max_lease_ttl = "720h"
+
 ui = true

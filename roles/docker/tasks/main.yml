@@ -1,25 +1,29 @@
 ---
 # tasks file for roles/docker
-- name: Import variables from prerequisites role
-  ansible.builtin.include_vars:
-    file: "{{ role_path }}/../prerequisites/vars/main.yml"
-    name: prerequisites
-
-- name: Config for Vault
-  ansible.builtin.include_tasks:
-    file: config.yaml
+#- name: Import variables from prerequisites role
+#  ansible.builtin.include_vars:
+#    file: "{{ role_path }}/../prerequisites/vars/main.yml"
+#    name: prerequisites
+#
+#- name: Config for Vault
+#  ansible.builtin.include_tasks:
+#    file: config.yml
+#
+#- name: Docker compose task
+#  ansible.builtin.include_tasks:
+#    file: docker_compose.yml
 
 - name: Docker compose task
   ansible.builtin.include_tasks:
-    file: docker_compose.yaml
+    file: docker_container.yml
 
 #    - name: Create S3 Bucket
 #      ansible.builtin.include_tasks:
-#        file: s3.yaml
+#        file: s3.yml
 
 #    - name: Prepare Terraform Version file
 #      ansible.builtin.include_tasks:
-#        file: version.yaml
+#        file: version.yml
 #  always:
 #    - name: Remove Sensitive data (CRT)
 #      ansible.builtin.include_tasks:

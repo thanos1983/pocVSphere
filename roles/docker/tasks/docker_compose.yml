@@ -6,7 +6,7 @@
       version: "{{ project.definition.version }}"
       services:
         vault:
-          # command: "server -dev"
+          # command: "server"
           image: "{{ project.definition.services.vault.image }}"
           restart: "{{ project.definition.services.vault.restart }}"
           container_name: "{{ project.definition.services.vault.container_name }}"
@@ -23,8 +23,8 @@
             start_period: "{{ project.definition.services.vault.healthcheck.start_period }}"
           environment:
             - 'VAULT_TOKEN={{ project.definition.services.vault.secret_password }}'
-            - 'VAULT_ADDR=https://0.0.0.0:{{ project.definition.services.vault.vault_api_port }}'
             - 'VAULT_DEV_ROOT_TOKEN_ID={{ project.definition.services.vault.secret_password }}'
+            - 'VAULT_ADDR=http://0.0.0.0:{{ project.definition.services.vault.vault_console_port }}'
           volumes:
             - "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.0 }}:/vault/logs"
             - "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.1 }}:/vault/file"
@@ -59,3 +59,14 @@
     that:
       - "output.services.s3.{{ project.definition.services.s3.container_name }}.state.running"
       - "output.services.vault.{{ project.definition.services.vault.container_name }}.state.running"
+
+- name: Sleep for {{ project.seconds }} seconds and continue
+  ansible.builtin.wait_for:
+    timeout: "{{ project.seconds }}"
+
+- name: Execute the command in remote shell; stdout goes to the specified file on the remote
+  ansible.builtin.shell: docker logs {{ project.definition.services.vault.container_name }}
+  register: container
+
+- ansible.builtin.debug:
+    var: container.stdout_lines

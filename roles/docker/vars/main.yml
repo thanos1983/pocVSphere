@@ -10,13 +10,19 @@ terraform:
       dest: "pocVSphere/tf/versions.tf"
 
 project:
+  seconds: 10
   name: terraform
+  vault_config_file_name: "vault_config"
   definition:
     version: "3.9"
     services:
       vault:
+        path: "creds"
         image: "vault"
+        policy: "admin"
+        secrets_version: 2
         cap_add: "IPC_LOCK"
+        s3_path: "creds/s3"
         vault_api_port: 8201
         restart: "on-failure:5"
         container_name: "vault"
@@ -61,3 +67,13 @@ project:
         user:
           id: 1000
           group: 1000
+
+container_commands:
+  s3:
+    - something
+  vault:
+    - /bin/sh -c "vault auth enable userpass"
+    - /bin/sh -c "vault secrets enable -path={{ project.definition.services.vault.path }} kv"
+    - /bin/sh -c "vault secrets enable -version={{ project.definition.services.vault.secrets_version }} kv"
+    - /bin/sh -c "vault kv put {{ project.definition.services.vault.s3_path }} {{ project.definition.services.s3.access_key }}={{ project.definition.services.s3.secret_key }}"
+    - /bin/sh -c "vault write auth/userpass/users/{{ project.definition.services.vault.secret_username }} password={{ project.definition.services.vault.secret_password }} policies={{ project.definition.services.vault.policy }}"

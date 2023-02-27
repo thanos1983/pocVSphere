@@ -1,7 +1,0 @@
-- name: Template a file to vault config dir
-  ansible.builtin.template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    mode: "{{ project.definition.services.s3.mode }}"
-  with_items:
-    - { src: "vault_config.hcl.j2", dest: "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.2 }}/vault_config.hcl" }

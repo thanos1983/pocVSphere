@@ -1,0 +1,8 @@
+- name: Template a file(s) to vault config dir
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ project.definition.services.s3.mode }}"
+  with_items:
+    # - { src: "{{ project.policy_file_name }}.hcl.j2", dest: "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.2 }}/{{ project.policy_file_name }}.hcl" }
+    - { src: "{{ project.vault_config_file_name }}.hcl.j2", dest: "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.2 }}/{{ project.vault_config_file_name }}.hcl" }
