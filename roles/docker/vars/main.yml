@@ -12,11 +12,13 @@ terraform:
 project:
   seconds: 10
   name: terraform
+  policy_file_name: "terraform-policy"
   vault_config_file_name: "vault_config"
   definition:
     version: "3.9"
     services:
       vault:
+        mode: "0644"
         path: "creds"
         image: "vault"
         policy: "admin"
@@ -61,7 +63,6 @@ project:
           validate_certs: true
           requester_pays: false
           permission: "private"
-          endpoint_url: "https://www"
           tags:
             value: "demo bucket"
         user:
@@ -70,10 +71,38 @@ project:
 
 container_commands:
   s3:
-    - something
+    - /bin/sh -c "mc alias set myminio {{ uri.s3.url }} {{ project.definition.services.s3.access_key }} {{ project.definition.services.s3.secret_key }} --insecure"
+    - /bin/sh -c "mc mb --with-lock --with-versioning myminio/vSphereDev --insecure"
+    - /bin/sh -c "mc mb --with-lock --with-versioning myminio/vSphereTest --insecure"
+    - /bin/sh -c "mc mb --with-lock --with-versioning myminio/vSphereUat --insecure"
+    - /bin/sh -c "mc mb --with-lock --with-versioning myminio/vSphereProd --insecure"
   vault:
     - /bin/sh -c "vault auth enable userpass"
     - /bin/sh -c "vault secrets enable -path={{ project.definition.services.vault.path }} kv"
     - /bin/sh -c "vault secrets enable -version={{ project.definition.services.vault.secrets_version }} kv"
+    - /bin/sh -c "vault policy write {{ project.policy_file_name }} /vault/{{ prerequisites.project.0.dirs.3 }}/{{ project.policy_file_name }}.hcl"
     - /bin/sh -c "vault kv put {{ project.definition.services.vault.s3_path }} {{ project.definition.services.s3.access_key }}={{ project.definition.services.s3.secret_key }}"
-    - /bin/sh -c "vault write auth/userpass/users/{{ project.definition.services.vault.secret_username }} password={{ project.definition.services.vault.secret_password }} policies={{ project.definition.services.vault.policy }}"
+    - /bin/sh -c "vault write auth/userpass/users/{{ project.definition.services.vault.secret_username }} password={{ project.definition.services.vault.secret_password }} policies={{ project.policy_file_name }}"
+
+uri:
+  s3:
+    delay: 1 # Every 1 seconds
+    retries: 20 # 20 * 1 seconds
+    method: "GET"
+    validate_certs: false
+    follow_redirects: "all"
+    url: "https://{{ inventory_hostname }}:{{ project.definition.services.s3.s3_api_port }}"
+  vault:
+    delay: 1 # Every 1 seconds
+    retries: 20 # 20 * 1 seconds
+    method: "GET"
+    validate_certs: false
+    follow_redirects: "all"
+    url: "https://{{ inventory_hostname }}:{{ project.definition.services.vault.vault_api_port }}"
+
+mc:
+  name: "mc"
+  mode: "0755"
+  image: "minio/mc"
+  restart: "on-failure:5"
+  entrypoint_script: "minio"

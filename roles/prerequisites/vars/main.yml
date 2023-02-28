@@ -35,6 +35,7 @@ project:
       - "logs"
       - "file"
       - "config"
+      - "policies"
       - "{{ dirConfigurations.certsDir }}"
   - name: s3DemoDir
     dirs:

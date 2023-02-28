@@ -4,5 +4,6 @@
     dest: "{{ item.dest }}"
     mode: "{{ project.definition.services.s3.mode }}"
   with_items:
-    # - { src: "{{ project.policy_file_name }}.hcl.j2", dest: "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.2 }}/{{ project.policy_file_name }}.hcl" }
-    - { src: "{{ project.vault_config_file_name }}.hcl.j2", dest: "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.2 }}/{{ project.vault_config_file_name }}.hcl" }
+    - { src: "{{ mc.entrypoint_script }}.sh.j2", dest: "{{ role_path }}/files/{{ mc.entrypoint_script }}.sh", mode: "{{ mc.mode }}"}
+    - { src: "{{ project.policy_file_name }}.hcl.j2", dest: "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.3 }}/{{ project.policy_file_name }}.hcl", mode: "{{ project.definition.services.vault.mode }}" }
+    - { src: "{{ project.vault_config_file_name }}.hcl.j2", dest: "{{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.2 }}/{{ project.vault_config_file_name }}.hcl", mode: "{{ project.definition.services.s3.mode }}" }

@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+mc alias set myminio {{ uri.s3.url }} {{ project.definition.services.s3.access_key }} {{ project.definition.services.s3.secret_key }} --insecure
+mc mb --with-lock --with-versioning myminio/vSphereDev --insecure
+mc mb --with-lock --with-versioning myminio/vSphereTest --insecure
+mc mb --with-lock --with-versioning myminio/vSphereUat --insecure
+mc mb --with-lock --with-versioning myminio/vSphereProd --insecure

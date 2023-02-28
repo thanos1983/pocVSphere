@@ -5,7 +5,7 @@
     - name: Run role 'prerequisites'
       ansible.builtin.include_role:
         name: prerequisites
-      tags: [ never ]
+#      tags: [ never ]
 
     - name: Run role 'docker'
       ansible.builtin.include_role:

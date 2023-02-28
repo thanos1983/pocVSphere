@@ -6,10 +6,10 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "{{ project.definition.services.s3.s3_bucket.name }}"
+    bucket = "{{ uri.s3.url }}"
     key    = "terraform.tfstate"
 
-    endpoint = "{{ project.definition.services.s3.s3_bucket.endpoint_url }}:{{ project.definition.services.s3.console_port }}"
+    endpoint = "{{ project.definition.services.s3.s3_bucket.endpoint_url }}"
 
     access_key = "{{ project.definition.services.s3.access_key }}"
     secret_key = "{{ project.definition.services.s3.secret_key }}"
