@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-mc alias set myminio {{ uri.s3.url_api }} {{ project.definition.services.s3.access_key }} {{ project.definition.services.s3.secret_key }} --insecure
+mc alias set myminio https://localhost:9000 minioadmin minioadmin --insecure
 mc mb --with-lock --with-versioning myminio/vSphereDev --insecure
 mc mb --with-lock --with-versioning myminio/vSphereTest --insecure
 mc mb --with-lock --with-versioning myminio/vSphereUat --insecure

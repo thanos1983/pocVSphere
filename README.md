@@ -1,16 +1,20 @@
 # pocVSphere
+
 Create / Destroy resources with terraform for VSphere
 
 ## Prerequisites
+
 ### Packages Ubuntu
 
-The user needs to install the `sshpass` package for ssh username / keys. It is also recommended to install `docker` and `docker-compose` packages. Sample:
+The user needs to install the `sshpass` package for ssh username / keys. It is also recommended to install `docker`
+and `docker-compose` packages. Sample:
 
 ```bash
 sudo apt-get install sshpass -y
 ```
 
-For Ubuntu the documentation can be found here: [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/).
+For Ubuntu the documentation can be found
+here: [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/).
 
 Assuming the user has followed all the steps as described above sample of command for installing the packages:
 
@@ -18,9 +22,11 @@ Assuming the user has followed all the steps as described above sample of comman
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 ```
 
-For ease of use it is recommended that the user will also apply the [Docker Engine post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/).
+For ease of use it is recommended that the user will also apply
+the [Docker Engine post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/).
 
 The user if desires to generate Let's Encrypt certificates they need to follow the steps bellow:
+
 - sudo apt install snapd # Install snapd
 - sudo snap install core; sudo snap refresh core # Ensure you have the latest snapd version installed
 - sudo snap install --classic certbot # Install Certbot with snapd
@@ -31,8 +37,8 @@ The user if desires to generate Let's Encrypt certificates they need to follow t
 The user needs to install the python package for encryption / descryption and also aiohttp for vmware. Sample:
 
 - Ansible packages
-  1. aiohttp
-  2. cryptography
+    1. aiohttp
+    2. cryptography
 
 The packages can be either installed by `pip`:
 
@@ -49,11 +55,16 @@ ansible-galaxy collection install vmware.vmware_rest
 
 ### Caution
 
-On this module we have used self-signed certificates. S3 buckets (Amazon) do not allow connection with non-certified SSL providers, hence the self-signed certificates are not allowed to connect with S3 bucket. As a workaround the user can copy the public key from the generated (dedicated directory) to the certificates directory and update the certificates list in order to include it (locally) as approved certificate.  
+On this module we have used self-signed certificates. S3 buckets (Amazon) do not allow connection with non-certified SSL
+providers, hence the self-signed certificates are not allowed to connect with S3 bucket. As a workaround the user can
+copy the public key from the generated (dedicated directory) to the certificates directory and update the certificates
+list in order to include it (locally) as approved certificate.
 
-The procedure differs per Linux vendor. On this tutorial we will demonstrate how it can by accomplished in Ubuntu (Debian based) Operating System (OS). 
+The procedure differs per Linux vendor. On this tutorial we will demonstrate how it can by accomplished in Ubuntu (
+Debian based) Operating System (OS).
 
-We could automate this procedure through Ansible but it would also require elevated access, hence we decided not apply it as we want the playbook to be non-root user executable. 
+We could automate this procedure through Ansible but it would also require elevated access, hence we decided not apply
+it as we want the playbook to be non-root user executable.
 
 Sample of manual steps of copying the CA to local approved certificates:
 
@@ -63,7 +74,8 @@ sudo update-ca-certificates --fresh
 sudo dpkg-reconfigure ca-certificates
 ```
 
-After the user should be able to use `terraform init -reconfigure` to allow local CA to be used towards S3 bucket (minio).
+After the user should be able to use `terraform init -reconfigure` to allow local CA to be used towards S3 bucket (
+minio).
 
 Sample of expected output:
 
@@ -89,6 +101,21 @@ should now work.
 If you ever set or change modules or backend configuration for Terraform,
 rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
+```
+
+### How to export variables to Environment Variables due to sensitive information
+
+Sample of the procedure:
+
+```bash
+$ export ACCESS_KEY="minioadmin"
+$ export SECRET_KEY="minioadmin"
+```
+
+As a next step the user can then use them through the init procedure. Sample of procedure:
+
+```bash
+$ terraform init -reconfigure -backend-config="access_key=${ACCESS_KEY}" -backend-config="secret_key=${SECRET_KEY}"
 ```
 
 If the user observes the error:

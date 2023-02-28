@@ -6,7 +6,7 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "demo"
+    bucket = "vspheredev"
     key    = "terraform.tfstate"
 
     endpoint = "https://localhost:9000"

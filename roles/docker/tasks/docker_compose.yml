@@ -67,9 +67,9 @@
     method: "{{ uri.vault.method }}"
     validate_certs: "{{ uri.vault.validate_certs }}"
     follow_redirects: "{{ uri.vault.follow_redirects }}"
-  register: _result
+  register: _result_vault
   delay: "{{ uri.vault.delay }}"
-  until: _result.status == 200
+  until: _result_vault.status == 200
   retries: "{{ uri.vault.retries }}"
 
 - name: Pause play until {{ project.definition.services.s3.container_name }} URL is reachable from this host
@@ -78,13 +78,13 @@
     method: "{{ uri.s3.method }}"
     validate_certs: "{{ uri.s3.validate_certs }}"
     follow_redirects: "{{ uri.s3.follow_redirects }}"
-  register: _result
+  register: _result_s3
   delay: "{{ uri.s3.delay }}"
-  until: _result.status == 200
+  until: _result_s3.status == 200
   retries: "{{ uri.s3.retries }}"
 
-- name: Copy mc client to {{ project.definition.services.vault.container_name }}
-  ansible.builtin.shell: "docker cp {{ role_path }}/files/mc {{ project.definition.services.vault.container_name }}:/usr/bin/mc"
+- name: Copy mc client to {{ project.definition.services.s3.container_name }}
+  ansible.builtin.shell: "docker cp {{ role_path }}/files/mc {{ project.definition.services.s3.container_name }}:/usr/bin/mc"
 
 # To be used in Prod mode. For the moment we use Dev mode (no need).
 #- name: Execute the command in remote shell; stdout goes to the specified file on the remote

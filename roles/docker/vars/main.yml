@@ -71,11 +71,11 @@ project:
 
 container_commands:
   s3:
-    - /bin/sh -c "mc alias set myminio {{ uri.s3.url }} {{ project.definition.services.s3.access_key }} {{ project.definition.services.s3.secret_key }} --insecure"
-    - /bin/sh -c "mc mb --with-lock --with-versioning myminio/vSphereDev --insecure"
-    - /bin/sh -c "mc mb --with-lock --with-versioning myminio/vSphereTest --insecure"
-    - /bin/sh -c "mc mb --with-lock --with-versioning myminio/vSphereUat --insecure"
-    - /bin/sh -c "mc mb --with-lock --with-versioning myminio/vSphereProd --insecure"
+    - /bin/sh -c "mc alias set myminio {{ uri.s3.url_api }} {{ project.definition.services.s3.access_key }} {{ project.definition.services.s3.secret_key }} --insecure"
+    - /bin/sh -c "mc mb --with-lock myminio/vspheredev --insecure"
+    - /bin/sh -c "mc mb --with-lock myminio/vspheretest --insecure"
+    - /bin/sh -c "mc mb --with-lock myminio/vsphereuat --insecure"
+    - /bin/sh -c "mc mb --with-lock myminio/vsphereprod --insecure"
   vault:
     - /bin/sh -c "vault auth enable userpass"
     - /bin/sh -c "vault secrets enable -path={{ project.definition.services.vault.path }} kv"
@@ -91,7 +91,8 @@ uri:
     method: "GET"
     validate_certs: false
     follow_redirects: "all"
-    url: "https://{{ inventory_hostname }}:{{ project.definition.services.s3.s3_api_port }}"
+    url: "https://{{ inventory_hostname }}:{{ project.definition.services.s3.s3_console_port }}"
+    url_api: "https://{{ inventory_hostname }}:{{ project.definition.services.s3.s3_api_port }}"
   vault:
     delay: 1 # Every 1 seconds
     retries: 20 # 20 * 1 seconds
