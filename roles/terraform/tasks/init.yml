@@ -1,20 +1,54 @@
 ---
 # tasks file for roles/terraform init
-- debug:
-    msg: "{{ item }}"
-  loop:
-    - "{{ docker.project.definition.services.vault.secret_username }}"
-    - "{{ docker.project.definition.services.vault.secret_password }}"
+- name: Get credentials from Vault
+  ansible.builtin.set_fact:
+    minio: "{{ lookup('community.hashi_vault.hashi_vault', 'secret={{ docker.project.definition.services.vault.s3_path }} auth_method={{ terraform.auth_method }} username={{ docker.project.definition.services.vault.secret_username }} password={{ docker.project.definition.services.vault.secret_password }} url=https://{{ inventory_hostname }}:{{ docker.project.definition.services.vault.vault_api_port }} cacert={{ ansible_env.HOME }}/{{ prerequisites.dirConfigurations.parentDir }}/{{ prerequisites.project.0.name }}/{{ prerequisites.project.0.dirs.4 }}/{{ prerequisites.cert.crt }}')}}"
+  no_log: true
 
-- name: Vault that requires authentication via LDAP
-  debug:
-    msg: "{{ lookup('hashi_vault', 'creds=s3/username:value auth_method={{ terraform.auth_method }} username={{ docker.project.definition.services.vault.secret_username }} password={{ docker.project.definition.services.vault.secret_password }} url=https://{{ inventory_hostname }}:{{ docker.project.definition.services.s3.s3_api_port }}')}}"
+- name: Terraform init
+  ansible.builtin.shell:
+    cmd: "terraform init -reconfigure -backend-config=access_key=${ACCESS_KEY} -backend-config=secret_key=${SECRET_KEY}"
+  args:
+    chdir: "{{ terraform.project_path }}"
+  environment:
+    ACCESS_KEY: "{{ minio.minio_username }}"
+    SECRET_KEY: "{{ minio.minio_password }}"
+  register: init
+  no_log: true
+
+- name: Debug Init
+  ansible.builtin.debug:
+    msg: "{{ init.stdout_lines }}"
+
+- name: Terraform plan
+  ansible.builtin.shell:
+    cmd: "terraform plan -out=planOutput -var-file={{ terraform.var_file }}"
+  args:
+    chdir: "{{ terraform.project_path }}"
+  environment:
+    ACCESS_KEY: "{{ minio.minio_username }}"
+    SECRET_KEY: "{{ minio.minio_password }}"
+  register: plan
+  no_log: true
+
+- name: Debug Init
+  ansible.builtin.debug:
+    msg: "{{ plan.stdout_lines }}"
+
+#- name: Export variables
+#  ansible.builtin.shell:
+#    cmd: "{{ item }}"
+#  loop:
+#    - "export ACCESS_KEY={{ minio.minio_username }}"
+#    - "export SECRET_KEY={{ minio.minio_password }}"
+#  no_log: true
 
 #- name: Define the backend configuration at init
 #  community.general.terraform:
 #    state: "{{ terraform.state }}"
 #    force_init: "{{ terraform.force_init }}"
 #    project_path: "{{ terraform.project_path }}"
+#    variables_files: "tfvars/dev.tfvars"
 #    backend_config:
-#      access_key: ""
-#      secret_key: ""
+#      access_key: "{{ minio.minio_username }}"
+#      secret_key: "{{ minio.minio_password }}"

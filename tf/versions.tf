@@ -11,8 +11,8 @@ terraform {
 
     endpoint = "https://localhost:9000"
 
-    access_key = "minioadmin"
-    secret_key = "minioadmin"
+    #  access_key = "minioadmin"
+    #  secret_key = "minioadmin"
 
     region                      = "main"
     skip_credentials_validation = true

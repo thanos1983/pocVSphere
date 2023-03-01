@@ -1,9 +1,9 @@
-resource "vsphere_virtual_machine" "vm" {
+resource "vsphere_virtual_machine" "virtual_machine" {
   alternate_guest_name = var.alternate_guest_name
   annotation           = var.annotation
 
   dynamic "cdrom" {
-    for_each = var.cdrom_content[*]
+    for_each = var.cdrom_block[*]
     content {
       datastore_id = cdrom.value.datastore_id
       path         = cdrom.value.path
@@ -11,17 +11,17 @@ resource "vsphere_virtual_machine" "vm" {
   }
 
   dynamic "clone" {
-    for_each = var.clone_content[*]
+    for_each = var.clone_block[*]
     content {
       template_uuid = clone.value.template_uuid
       linked_clone  = clone.value.linked_clone
       timeout       = clone.value.timeout
       dynamic "customize" {
-        for_each = clone.value.customize_content[*]
+        for_each = clone.value.customize_block[*]
         content {
           timeout = customize.value.timeout
           dynamic "network_interface" {
-            for_each = customize.value.network_interfaces
+            for_each = customize.value.network_interface_block[*]
             content {
               dns_server_list = network_interface.value.dns_server_list
               dns_domain      = network_interface.value.dns_domain
@@ -36,7 +36,7 @@ resource "vsphere_virtual_machine" "vm" {
           dns_server_list = customize.value.dns_server_list
           dns_suffix_list = customize.value.dns_suffix_list
           dynamic "linux_options" {
-            for_each = customize.value.linux_options_content[*]
+            for_each = customize.value.linux_options_block[*]
             content {
               host_name    = linux_options.value.host_name
               domain       = linux_options.value.domain
@@ -46,7 +46,7 @@ resource "vsphere_virtual_machine" "vm" {
             }
           }
           dynamic "windows_options" {
-            for_each = customize.value.windows_options_content[*]
+            for_each = customize.value.windows_options_block[*]
             content {
               computer_name         = windows_options.value.computer_name
               admin_password        = windows_options.value.admin_password
@@ -80,7 +80,7 @@ resource "vsphere_virtual_machine" "vm" {
   name                       = var.name
 
   dynamic "network_interface" {
-    for_each = var.network_interfaces
+    for_each = var.network_interface_block[*]
     content {
       network_id            = network_interface.value.network_id
       adapter_type          = network_interface.value.adapter_type

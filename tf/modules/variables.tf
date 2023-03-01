@@ -10,47 +10,44 @@ variable "annotation" {
   default     = null
 }
 
-variable "cdrom_content" {
+variable "cdrom_block" {
   description = "A specification for a CD-ROM device on the virtual machine."
-  type = object({
+  type        = object({
     datastore_id = string
     path         = string
   })
-  default = {
-    datastore_id = null
-    path         = null
-  }
+  default = null
 }
 
-variable "clone_content" {
+variable "clone_block" {
   description = "The clone block can be used to create a new virtual machine from an existing virtual machine or template."
-  type = object({
-    template_uuid = optional(string)
-    linked_clone  = optional(string)
-    timeout       = optional(number)
-    customize_content = optional(object({
-      timeout = optional(number, 10)
-      network_interfaces = optional(list(object({
-        dns_server_list = optional(list(string))
+  type        = object({
+    template_uuid   = string
+    linked_clone    = optional(bool)
+    timeout         = optional(number)
+    customize_block = optional(object({
+      timeout                 = optional(number)
+      network_interface_block = object({
+        dns_server_list = optional(set(string))
         dns_domain      = optional(string)
         ipv4_address    = optional(string)
-        ipv4_netmask    = optional(number, 24)
+        ipv4_netmask    = optional(number)
         ipv6_address    = optional(string)
         ipv6_netmask    = optional(number)
-      })))
-      ipv4_gateway    = optional(string)
-      ipv6_gateway    = optional(string)
-      dns_server_list = optional(list(string))
-      dns_suffix_list = optional(list(string))
-      linux_options_content = optional(object({
-        host_name    = optional(string)
-        domain       = optional(string)
-        hw_clock_utc = optional(bool, true)
+      })
+      ipv4_gateway        = optional(string)
+      ipv6_gateway        = optional(string)
+      dns_server_list     = optional(set(string))
+      dns_suffix_list     = optional(set(string))
+      linux_options_block = optional(object({
+        host_name    = string
+        domain       = string
+        hw_clock_utc = optional(bool)
         script_text  = optional(string)
         time_zone    = optional(string)
       }))
-      windows_options_content = optional(object({
-        computer_name         = optional(string)
+      windows_options_block = optional(object({
+        computer_name         = string
         admin_password        = optional(string)
         workgroup             = optional(string)
         join_domain           = optional(string)
@@ -59,10 +56,10 @@ variable "clone_content" {
         full_name             = optional(string)
         organization_name     = optional(string)
         product_key           = optional(string)
-        run_once_command_list = optional(list(string))
-        auto_logon            = optional(bool, false)
-        auto_logon_count      = optional(number, 1)
-        time_zone             = optional(number, 85)
+        run_once_command_list = optional(set(string))
+        auto_logon            = optional(bool)
+        auto_logon_count      = optional(number)
+        time_zone             = optional(number)
       }))
       windows_sysprep_text = optional(string)
     }))
@@ -75,10 +72,10 @@ variable "name" {
   type        = string
 }
 
-variable "network_interfaces" {
+variable "network_interface_block" {
   description = "A specification for a virtual NIC on the virtual machine."
-  type = list(object({
-    network_id            = optional(string)
+  type        = object({
+    network_id            = string
     adapter_type          = optional(string)
     use_static_mac        = optional(bool)
     mac_address           = optional(string)
@@ -87,8 +84,8 @@ variable "network_interfaces" {
     bandwidth_share_level = optional(string)
     bandwidth_share_count = optional(number)
     ovf_mapping           = optional(string)
-  }))
-  default = []
+  })
+  default = null
 }
 
 variable "resource_pool_id" {

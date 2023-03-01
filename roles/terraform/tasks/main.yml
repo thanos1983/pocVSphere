@@ -4,6 +4,11 @@
   block:
     - name: Import variables from prerequisites role
       ansible.builtin.include_vars:
+        file: "{{ role_path }}/../prerequisites/vars/main.yml"
+        name: prerequisites
+
+    - name: Import variables from prerequisites role
+      ansible.builtin.include_vars:
         file: "{{ role_path }}/../docker/vars/main.yml"
         name: docker
 

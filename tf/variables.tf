@@ -7,7 +7,7 @@ variable "name" {
 variable "name-template" {
   description = "Name of the VM Template."
   type        = string
-  default     = "ubuntu-server-template"
+  default     = "ubuntu-server-template-new"
 }
 
 variable "vsphere_user" {

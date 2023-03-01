@@ -43,7 +43,7 @@ The user needs to install the python package for encryption / descryption and al
 The packages can be either installed by `pip`:
 
 ```bash
-pip3 install cryptography aiohttp docker docker-compose botocore boto3 --upgrade
+pip3 install cryptography aiohttp docker docker-compose botocore boto3 hvac --upgrade
 ```
 
 Or by `Ansible` packages:

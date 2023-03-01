@@ -1,6 +1,6 @@
 locals {
   iso_dir                    = "DemoIsoImages"
-  windows_image              = "Windows.iso"
+  windows_image              = "windows_server.iso"
   ubuntu_image               = "ubuntu-22.04.1-live-server-amd64.iso"
   cd_rom_path_remote_linux   = "${local.iso_dir}/${local.ubuntu_image}"
   cd_rom_path_remote_windows = "${local.iso_dir}/${local.windows_image}"
@@ -15,7 +15,7 @@ locals {
       wait_for_guest_net_timeout = var.wait_for_guest_net_timeout
       sync_time_with_host        = var.sync_time_with_host
       network_interfaces         = local.network_interfaces
-      cdrom_content              = {
+      cdrom_block                = {
         datastore_id = data.vsphere_datastore.iso_datastore.id
         path         = local.cd_rom_path_remote_linux
       }
@@ -32,7 +32,7 @@ locals {
       wait_for_guest_net_timeout = var.wait_for_guest_net_timeout
       sync_time_with_host        = var.sync_time_with_host
       network_interfaces         = local.network_interfaces
-      cdrom_content              = {
+      cdrom_block                = {
         datastore_id = data.vsphere_datastore.iso_datastore.id
         path         = local.cd_rom_path_remote_windows
       }

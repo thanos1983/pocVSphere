@@ -9,7 +9,7 @@
 #  wait_for_guest_net_timeout = local.vms_to_provision.linux_vm.wait_for_guest_net_timeout
 #  sync_time_with_host        = local.vms_to_provision.linux_vm.sync_time_with_host
 #  network_interfaces         = local.vms_to_provision.linux_vm.network_interfaces
-#  cdrom_content              = local.vms_to_provision.linux_vm.cdrom_content
+#  cdrom_block                = local.vms_to_provision.linux_vm.cdrom_block
 #  disk_label                 = local.vms_to_provision.linux_vm.disk_label
 #  disk_size                  = local.vms_to_provision.linux_vm.disk_size
 #}
@@ -25,14 +25,14 @@
 #  wait_for_guest_net_timeout = local.vms_to_provision.windows_vm.wait_for_guest_net_timeout
 #  sync_time_with_host        = local.vms_to_provision.windows_vm.sync_time_with_host
 #  network_interfaces         = local.vms_to_provision.windows_vm.network_interfaces
-#  cdrom_content              = local.vms_to_provision.windows_vm.cdrom_content
+#  cdrom_block                = local.vms_to_provision.windows_vm.cdrom_block
 #  disk_label                 = local.vms_to_provision.windows_vm.disk_label
 #  disk_size                  = local.vms_to_provision.windows_vm.disk_size
 #}
 
 module "vm-iso" {
   source                     = ".././modules"
-  for_each = local.vms_to_provision
+  for_each                   = local.vms_to_provision
   name                       = each.value.name
   resource_pool_id           = each.value.resource_pool_id
   datastore_id               = each.value.datastore_id
@@ -42,7 +42,7 @@ module "vm-iso" {
   wait_for_guest_net_timeout = each.value.wait_for_guest_net_timeout
   sync_time_with_host        = each.value.sync_time_with_host
   network_interfaces         = each.value.network_interfaces
-  cdrom_content              = each.value.cdrom_content
+  cdrom_block                = each.value.cdrom_block
   disk_label                 = each.value.disk_label
   disk_size                  = each.value.disk_size
 }

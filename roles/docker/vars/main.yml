@@ -19,18 +19,20 @@ project:
     services:
       vault:
         mode: "0644"
-        path: "creds"
+        path: "secret"
         image: "vault"
         policy: "admin"
         secrets_version: 2
         cap_add: "IPC_LOCK"
-        s3_path: "creds/s3"
         vault_api_port: 8201
         restart: "on-failure:5"
         container_name: "vault"
         vault_console_port: 8200
+        s3_path: "secret/data/s3"
         secret_username: "vaultadmin"
         secret_password: "vaultadmin"
+        key_username: "minio_username"
+        key_password: "minio_password"
         user:
           id: 100
           group: 1000
