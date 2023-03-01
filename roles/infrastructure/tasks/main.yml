@@ -10,3 +10,13 @@
     - name: Run role 'docker'
       ansible.builtin.include_role:
         name: docker
+  rescue:
+    - name: Run role 'prerequisites' - task 'cleanup'
+      ansible.builtin.include_role:
+        name: prerequisites
+        tasks_from: cleanup
+
+    - name: Run role 'docker' - task 'cleanup_docker'
+      ansible.builtin.include_role:
+        name: docker
+        tasks_from: cleanup_docker

@@ -28,6 +28,8 @@ cert:
     - "IP:0.0.0.0"
     - "IP:127.0.0.1"
     - "DNS:localhost"
+os_cert_dirs:
+  ubuntu: "/usr/local/share/ca-certificates/{{ cert.crt }}"
 # Do not modify sequence
 project:
   - name: vaultDemoDir

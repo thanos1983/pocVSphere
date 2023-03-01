@@ -1,0 +1,8 @@
+---
+# tasks file for roles/infrastructure cleanup
+- name: Delete created parent directory
+  ansible.builtin.file:
+    state: absent
+    path: "{{ ansible_env.HOME }}/{{ dirConfigurations.parentDir }}"
+  when: ansible_connection == 'local'
+  become: true

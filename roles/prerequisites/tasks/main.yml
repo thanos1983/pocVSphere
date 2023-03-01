@@ -8,6 +8,10 @@
   ansible.builtin.include_tasks:
     file: cert.yml
 
+- name: Install certificate(s) for Ubuntu
+  ansible.builtin.include_tasks:
+    file: ubuntu.yml
+
 - name: Distribute certificate(s)
   ansible.builtin.include_tasks:
     file: distribute.yml

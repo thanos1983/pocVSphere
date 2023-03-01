@@ -63,10 +63,10 @@
 
 - name: Pause play until {{ project.definition.services.vault.container_name }} URL is reachable from this host
   ansible.builtin.uri:
-    url: "{{ uri.vault.url }}"
     method: "{{ uri.vault.method }}"
     validate_certs: "{{ uri.vault.validate_certs }}"
     follow_redirects: "{{ uri.vault.follow_redirects }}"
+    url: "https://{{ inventory_hostname }}:{{ project.definition.services.vault.vault_api_port }}"
   register: _result_vault
   delay: "{{ uri.vault.delay }}"
   until: _result_vault.status == 200
@@ -74,10 +74,10 @@
 
 - name: Pause play until {{ project.definition.services.s3.container_name }} URL is reachable from this host
   ansible.builtin.uri:
-    url: "{{ uri.s3.url }}"
     method: "{{ uri.s3.method }}"
     validate_certs: "{{ uri.s3.validate_certs }}"
     follow_redirects: "{{ uri.s3.follow_redirects }}"
+    url: "https://{{ inventory_hostname }}:{{ project.definition.services.s3.s3_console_port }}"
   register: _result_s3
   delay: "{{ uri.s3.delay }}"
   until: _result_s3.status == 200

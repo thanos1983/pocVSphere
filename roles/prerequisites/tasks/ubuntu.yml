@@ -1,0 +1,17 @@
+---
+# tasks file for roles/prerequisites ubuntu
+- name: Install, configure, and start Apache
+  block:
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        mode: "{{ cert.mode }}"
+        dest: "{{ os_cert_dirs.ubuntu }}"
+        src: "{{ role_path }}/files/{{ cert.crt }}"
+
+    - name: Update /etc/ssl/certs dir to hold SSL certificates
+      ansible.builtin.shell: update-ca-certificates --fresh
+
+    - name: Reconfigure CA-Certificates
+      ansible.builtin.shell: dpkg-reconfigure -p critical ca-certificates
+  when: ansible_facts['distribution'] == "Ubuntu"
+  become: true

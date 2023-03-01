@@ -69,21 +69,6 @@ project:
           id: 1000
           group: 1000
 
-container_commands:
-  s3:
-    - /bin/sh -c "mc alias set myminio {{ uri.s3.url_api }} {{ project.definition.services.s3.access_key }} {{ project.definition.services.s3.secret_key }} --insecure"
-    - /bin/sh -c "mc mb --with-lock myminio/vspheredev --insecure"
-    - /bin/sh -c "mc mb --with-lock myminio/vspheretest --insecure"
-    - /bin/sh -c "mc mb --with-lock myminio/vsphereuat --insecure"
-    - /bin/sh -c "mc mb --with-lock myminio/vsphereprod --insecure"
-  vault:
-    - /bin/sh -c "vault auth enable userpass"
-    - /bin/sh -c "vault secrets enable -path={{ project.definition.services.vault.path }} kv"
-    - /bin/sh -c "vault secrets enable -version={{ project.definition.services.vault.secrets_version }} kv"
-    - /bin/sh -c "vault policy write {{ project.policy_file_name }} /vault/{{ prerequisites.project.0.dirs.3 }}/{{ project.policy_file_name }}.hcl"
-    - /bin/sh -c "vault kv put {{ project.definition.services.vault.s3_path }} {{ project.definition.services.s3.access_key }}={{ project.definition.services.s3.secret_key }}"
-    - /bin/sh -c "vault write auth/userpass/users/{{ project.definition.services.vault.secret_username }} password={{ project.definition.services.vault.secret_password }} policies={{ project.policy_file_name }}"
-
 uri:
   s3:
     delay: 1 # Every 1 seconds
@@ -91,15 +76,12 @@ uri:
     method: "GET"
     validate_certs: false
     follow_redirects: "all"
-    url: "https://{{ inventory_hostname }}:{{ project.definition.services.s3.s3_console_port }}"
-    url_api: "https://{{ inventory_hostname }}:{{ project.definition.services.s3.s3_api_port }}"
   vault:
     delay: 1 # Every 1 seconds
     retries: 20 # 20 * 1 seconds
     method: "GET"
     validate_certs: false
     follow_redirects: "all"
-    url: "https://{{ inventory_hostname }}:{{ project.definition.services.vault.vault_api_port }}"
 
 mc:
   name: "mc"

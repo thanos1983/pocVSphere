@@ -1,0 +1,19 @@
+---
+# tasks file for roles/docker docker_cleanup
+- name: Stop container(s)
+  docker_container:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ project.definition.services.s3.container_name }}"
+    - "{{ project.definition.services.vault.container_name }}"
+
+- name: Prune everything (including non-dangling images)
+  community.docker.docker_prune:
+    images: true
+    volumes: true
+    networks: true
+    containers: true
+    builder_cache: true
+    images_filters:
+      dangling: false

@@ -1,0 +1,12 @@
+---
+# tasks file for roles/terraform
+- name: Complete block of container processes
+  block:
+    - name: Import variables from prerequisites role
+      ansible.builtin.include_vars:
+        file: "{{ role_path }}/../docker/vars/main.yml"
+        name: docker
+
+    - name: Config for Vault
+      ansible.builtin.include_tasks:
+        file: init.yml

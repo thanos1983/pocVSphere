@@ -2,6 +2,11 @@
 # set -x
 # set -e
 
+function usage() {
+  echo "Usage: ${0} [-r] [infrastructure|terraform|cleanup]" 1>&2
+  exit 2
+}
+
 function error() {
   echo "'${1-parameter}' failed with exit code $? in function '${FUNCNAME[1]}' at line ${BASH_LINENO[0]}" &&
     exit 1
@@ -10,9 +15,9 @@ function error() {
 function deploy() {
 
   env=${env:="dev"}
+  ansible_tags=${ansible_tags:="${1}"}
   vault_token=${vault_token:="myToken"}
   ansible_user=${ansible_user:="tinyos"}
-  ansible_tags=${ansible_tags:="infrastructure"}
   ansible_skip_tags=${ansible_skip_tags:="never"}
   target_hosts_group=${target_hosts_group:="local"}
   ansible_password=${ansible_password:="technicalPassword"}
@@ -73,4 +78,19 @@ function deploy() {
 
 }
 
-deploy
+if [[ $# -gt 2 ]]; then
+  usage
+fi
+
+while getopts "r:" option; do
+  case "${option}" in
+
+  r) role=${OPTARG} ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
+done
+
+deploy "${role}"

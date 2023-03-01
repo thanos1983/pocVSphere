@@ -10,6 +10,10 @@
       tags: [ ping ]
     - role: docker
       tags: [ docker ]
+    - role: cleanup
+      tags: [ cleanup ]
+    - role: terraform
+      tags: [ terraform ]
     - role: prerequisites
       tags: [ prerequisites ]
     - role: infrastructure
