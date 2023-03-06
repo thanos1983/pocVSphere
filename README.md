@@ -324,5 +324,191 @@ To perform exactly these actions, run the following command to apply:
 Last step the user can execute the action(s) proposed from previous step `terraform plan`. Sample:
 
 ```shell
-
+$ terraform apply planOutput
+module.vm-template.vsphere_virtual_machine.virtual_machine: Creating...
+module.vm-template.vsphere_virtual_machine.virtual_machine: Still creating... [10s elapsed]
+module.vm-template.vsphere_virtual_machine.virtual_machine: Still creating... [20s elapsed]
+module.vm-template.vsphere_virtual_machine.virtual_machine: Still creating... [30s elapsed]
+module.vm-template.vsphere_virtual_machine.virtual_machine: Still creating... [40s elapsed]
+module.vm-template.vsphere_virtual_machine.virtual_machine: Still creating... [50s elapsed]
+module.vm-template.vsphere_virtual_machine.virtual_machine: Still creating... [1m0s elapsed]
+module.vm-template.vsphere_virtual_machine.virtual_machine: Still creating... [1m10s elapsed]
+module.vm-template.vsphere_virtual_machine.virtual_machine: Still creating... [1m20s elapsed]
+module.vm-template.vsphere_virtual_machine.virtual_machine: Creation complete after 1m27s [id=42174053-426f-0f8f-6c91-14dc80366d72]
 ```
+
+If the user decides to destroy the created VMs it easily be applied with terraform as well. Sample of command:
+
+````bash
+$ terraform plan -destroy -out=destroyOutput -var-file=tfvars/dev.tfvars
+data.vsphere_datacenter.datacenter: Reading...
+data.vsphere_datacenter.datacenter: Read complete after 1s [id=datacenter-213]
+data.vsphere_network.network: Reading...
+data.vsphere_datastore.datastore: Reading...
+data.vsphere_compute_cluster.cluster: Reading...
+data.vsphere_virtual_machine.template: Reading...
+data.vsphere_datastore.datastore: Read complete after 0s [id=datastore-223]
+data.vsphere_network.network: Read complete after 0s [id=network-224]
+data.vsphere_compute_cluster.cluster: Read complete after 0s [id=domain-c260]
+data.vsphere_virtual_machine.template: Read complete after 1s [id=4217c09b-6f6f-90bd-9ab1-f4fbcc19e70c]
+module.vm-template.vsphere_virtual_machine.virtual_machine: Refreshing state... [id=42174053-426f-0f8f-6c91-14dc80366d72]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # module.vm-template.vsphere_virtual_machine.virtual_machine will be destroyed
+  - resource "vsphere_virtual_machine" "virtual_machine" {
+      - boot_delay                              = 0 -> null
+      - boot_retry_delay                        = 10000 -> null
+      - boot_retry_enabled                      = false -> null
+      - change_version                          = "2023-03-06T15:29:18.847818Z" -> null
+      - cpu_hot_add_enabled                     = false -> null
+      - cpu_hot_remove_enabled                  = false -> null
+      - cpu_limit                               = -1 -> null
+      - cpu_performance_counters_enabled        = false -> null
+      - cpu_reservation                         = 0 -> null
+      - cpu_share_count                         = 1000 -> null
+      - cpu_share_level                         = "normal" -> null
+      - custom_attributes                       = {} -> null
+      - datastore_id                            = "datastore-223" -> null
+      - efi_secure_boot_enabled                 = false -> null
+      - enable_disk_uuid                        = false -> null
+      - enable_logging                          = false -> null
+      - ept_rvi_mode                            = "automatic" -> null
+      - extra_config                            = {} -> null
+      - extra_config_reboot_required            = true -> null
+      - firmware                                = "bios" -> null
+      - force_power_off                         = true -> null
+      - guest_id                                = "ubuntu64Guest" -> null
+      - guest_ip_addresses                      = [] -> null
+      - hardware_version                        = 19 -> null
+      - host_system_id                          = "host-220" -> null
+      - hv_mode                                 = "hvAuto" -> null
+      - id                                      = "42174053-426f-0f8f-6c91-14dc80366d72" -> null
+      - ide_controller_count                    = 2 -> null
+      - latency_sensitivity                     = "normal" -> null
+      - memory                                  = 1024 -> null
+      - memory_hot_add_enabled                  = false -> null
+      - memory_limit                            = -1 -> null
+      - memory_reservation                      = 0 -> null
+      - memory_share_count                      = 10240 -> null
+      - memory_share_level                      = "normal" -> null
+      - migrate_wait_timeout                    = 30 -> null
+      - moid                                    = "vm-2535" -> null
+      - name                                    = "ubuntu-server-template-demo" -> null
+      - nested_hv_enabled                       = false -> null
+      - num_cores_per_socket                    = 1 -> null
+      - num_cpus                                = 1 -> null
+      - pci_device_id                           = [] -> null
+      - power_state                             = "off" -> null
+      - poweron_timeout                         = 300 -> null
+      - reboot_required                         = false -> null
+      - resource_pool_id                        = "resgroup-261" -> null
+      - run_tools_scripts_after_power_on        = true -> null
+      - run_tools_scripts_after_resume          = true -> null
+      - run_tools_scripts_before_guest_reboot   = false -> null
+      - run_tools_scripts_before_guest_shutdown = true -> null
+      - run_tools_scripts_before_guest_standby  = true -> null
+      - sata_controller_count                   = 0 -> null
+      - scsi_bus_sharing                        = "noSharing" -> null
+      - scsi_controller_count                   = 1 -> null
+      - scsi_type                               = "lsilogic" -> null
+      - shutdown_wait_timeout                   = 3 -> null
+      - swap_placement_policy                   = "inherit" -> null
+      - sync_time_with_host                     = true -> null
+      - sync_time_with_host_periodically        = false -> null
+      - tags                                    = [] -> null
+      - tools_upgrade_policy                    = "manual" -> null
+      - uuid                                    = "42174053-426f-0f8f-6c91-14dc80366d72" -> null
+      - vapp_transport                          = [] -> null
+      - vbs_enabled                             = false -> null
+      - vmware_tools_status                     = "guestToolsNotRunning" -> null
+      - vmx_path                                = "ubuntu-server-template-demo_1/ubuntu-server-template-demo.vmx" -> null
+      - vvtd_enabled                            = false -> null
+      - wait_for_guest_ip_timeout               = 0 -> null
+      - wait_for_guest_net_routable             = true -> null
+      - wait_for_guest_net_timeout              = 0 -> null
+
+      - clone {
+          - linked_clone    = false -> null
+          - ovf_network_map = {} -> null
+          - ovf_storage_map = {} -> null
+          - template_uuid   = "4217c09b-6f6f-90bd-9ab1-f4fbcc19e70c" -> null
+          - timeout         = 30 -> null
+
+          - customize {
+              - dns_server_list = [] -> null
+              - dns_suffix_list = [] -> null
+              - timeout         = 10 -> null
+
+              - linux_options {
+                  - domain       = "NNITCORP.com" -> null
+                  - host_name    = "foo-demo-host" -> null
+                  - hw_clock_utc = true -> null
+                }
+
+              - network_interface {}
+            }
+        }
+
+      - disk {
+          - attach           = false -> null
+          - controller_type  = "scsi" -> null
+          - datastore_id     = "datastore-223" -> null
+          - device_address   = "scsi:0:0" -> null
+          - disk_mode        = "persistent" -> null
+          - disk_sharing     = "sharingNone" -> null
+          - eagerly_scrub    = false -> null
+          - io_limit         = -1 -> null
+          - io_reservation   = 0 -> null
+          - io_share_count   = 1000 -> null
+          - io_share_level   = "normal" -> null
+          - keep_on_remove   = false -> null
+          - key              = 2000 -> null
+          - label            = "disk0" -> null
+          - path             = "ubuntu-server-template-demo_1/ubuntu-server-template-demo.vmdk" -> null
+          - size             = 16 -> null
+          - thin_provisioned = false -> null
+          - unit_number      = 0 -> null
+          - uuid             = "6000C299-5ddd-0054-f459-634e50778c1a" -> null
+          - write_through    = false -> null
+        }
+
+      - network_interface {
+          - adapter_type          = "vmxnet3" -> null
+          - bandwidth_limit       = -1 -> null
+          - bandwidth_reservation = 0 -> null
+          - bandwidth_share_count = 50 -> null
+          - bandwidth_share_level = "normal" -> null
+          - device_address        = "pci:0:7" -> null
+          - key                   = 4000 -> null
+          - mac_address           = "00:50:56:97:78:15" -> null
+          - network_id            = "network-224" -> null
+          - use_static_mac        = false -> null
+        }
+    }
+
+Plan: 0 to add, 0 to change, 1 to destroy.
+
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: destroyOutput
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "destroyOutput"
+````
+
+Last step apply the command (after reviewing the destroyed resources):
+
+````bash
+$ terraform apply destroyOutput
+module.vm-template.vsphere_virtual_machine.virtual_machine: Destroying... [id=42174053-426f-0f8f-6c91-14dc80366d72]
+module.vm-template.vsphere_virtual_machine.virtual_machine: Destruction complete after 0s
+
+Apply complete! Resources: 0 added, 0 changed, 1 destroyed.
+````
+
+Due a variety of parameters e.g. (network traffic, VSphere resources etc) the time can vary. The numbers provided above on all samples are just demos.
+
