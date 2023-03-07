@@ -1,0 +1,8 @@
+#!/bin/bash
+{
+minio_username_out=$(sed -e 's/^"//' -e 's/"$//' <<<"${minio_username}")
+minio_password_out=$(sed -e 's/^"//' -e 's/"$//' <<<"${minio_password}")
+export ACCESS_KEY=${minio_username_out}
+export SECRET_KEY=${minio_password_out}
+} &> /dev/null
+bash

@@ -1,0 +1,10 @@
+#!/bin/bash
+{
+minio_password=$(curl -H "X-Vault-Token: {{ docker.project.definition.services.vault.secret_password }}" -X GET https://{{ inventory_hostname }}:{{ docker.project.definition.services.vault.vault_api_port }}/v1/{{ docker.project.definition.services.vault.s3_path }} | jq '.data.data.minio_password')
+minio_username=$(curl -H "X-Vault-Token: {{ docker.project.definition.services.vault.secret_password }}" -X GET https://{{ inventory_hostname }}:{{ docker.project.definition.services.vault.vault_api_port }}/v1/{{ docker.project.definition.services.vault.s3_path }} | jq '.data.data.minio_username')
+minio_username_out=$(sed -e 's/^"//' -e 's/"$//' <<<"${minio_username}")
+minio_password_out=$(sed -e 's/^"//' -e 's/"$//' <<<"${minio_password}")
+export ACCESS_KEY=${minio_username_out}
+export SECRET_KEY=${minio_password_out}
+} &> /dev/null
+bash

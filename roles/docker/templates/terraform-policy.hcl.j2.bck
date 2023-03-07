@@ -1,3 +1,7 @@
 path "{{ project.definition.services.vault.path }}/*" {
   capabilities = ["create", "read", "update", "delete", "list"]
 }
+
+path "{{ project.definition.services.vault.s3_path }}" {
+  capabilities = ["read"]
+}

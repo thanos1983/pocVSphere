@@ -6,11 +6,13 @@
       ansible.builtin.include_vars:
         file: "{{ role_path }}/../prerequisites/vars/main.yml"
         name: prerequisites
+      no_log: true
 
     - name: Import variables from prerequisites role
       ansible.builtin.include_vars:
         file: "{{ role_path }}/../docker/vars/main.yml"
         name: docker
+      no_log: true
 
     - name: Config for Vault
       ansible.builtin.include_tasks:

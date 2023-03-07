@@ -78,7 +78,7 @@ function deploy() {
 
 }
 
-if [[ $# -gt 2 ]]; then
+if [[ $# -ne 2 ]]; then
   usage
 fi
 

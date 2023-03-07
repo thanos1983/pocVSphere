@@ -19,6 +19,7 @@ project:
     services:
       vault:
         mode: "0644"
+        secret: "s3"
         path: "secret"
         image: "vault"
         policy: "admin"
