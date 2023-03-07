@@ -4,10 +4,16 @@ variable "name" {
   default     = "ubuntu-server-template-demo"
 }
 
-variable "name-template" {
-  description = "Name of the VM Template."
+variable "name-template-linux" {
+  description = "Name of the Linux VM Template."
   type        = string
   default     = "ubuntu-server-template-new"
+}
+
+variable "name-template-windows" {
+  description = "Name of the Windows VM Template."
+  type        = string
+  default     = "windows-server-template-new"
 }
 
 variable "vsphere_user" {
@@ -69,10 +75,38 @@ variable "num_cpus" {
   default     = 1
 }
 
-variable "memory" {
-  description = "The memory size to assign to the virtual machine, in MB. Default: 1024 (1 GB)."
+variable "memory_linux" {
+  description = "The memory size to assign to the linux virtual machine, in MB. Default: 1024 (1 GB)."
   type        = number
   default     = 1024
+}
+
+variable "memory_windows" {
+  description = "The memory size to assign to the windows virtual machine, in MB. Default: 4096 (4 GB)."
+  type        = number
+  default     = 4096
+}
+
+variable "firmware" {
+  description = "The firmware for the virtual machine."
+  type        = string
+  validation {
+    condition     = contains(["bios", "efi"], lower(var.firmware))
+    error_message = "Invalid input, valid input options are: bios, efi."
+  }
+  default = "efi"
+}
+
+variable "efi_secure_boot_enabled_windows" {
+  description = "Use this option to enable EFI secure boot when the firmware type is set to is efi for Windows."
+  type        = bool
+  default     = true
+}
+
+variable "efi_secure_boot_enabled_linux" {
+  description = "Use this option to enable EFI secure boot when the firmware type is set to is efi for Linux."
+  type        = bool
+  default     = false
 }
 
 variable "sync_time_with_host" {

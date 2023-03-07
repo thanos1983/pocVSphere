@@ -13,7 +13,7 @@
 #  disk_label                 = local.vms_to_provision.linux_vm.disk_label
 #  disk_size                  = local.vms_to_provision.linux_vm.disk_size
 #}
-#
+
 #module "vm-iso-windows" {
 #  source                     = ".././modules"
 #  name                       = local.vms_to_provision.windows_vm.name

@@ -69,15 +69,25 @@ resource "vsphere_virtual_machine" "virtual_machine" {
     }
   }
 
-  wait_for_guest_net_timeout = var.wait_for_guest_net_timeout
-  sync_time_with_host        = var.sync_time_with_host
-  resource_pool_id           = var.resource_pool_id
-  datastore_id               = var.datastore_id
-  guest_id                   = var.guest_id
-  scsi_type                  = var.scsi_type
-  num_cpus                   = var.num_cpus
-  memory                     = var.memory
-  name                       = var.name
+  extra_config_reboot_required = var.extra_config_reboot_required
+  custom_attributes            = var.custom_attributes
+  datastore_id                 = var.datastore_id
+  datastore_cluster_id         = var.datastore_cluster_id
+  datacenter_id                = var.datacenter_id
+
+  disk {
+    label            = var.disk_label
+    size             = var.disk_size
+    thin_provisioned = var.thin_provisioned
+  }
+
+  extra_config     = var.extra_config
+  firmware         = var.firmware
+  folder           = var.folder
+  guest_id         = var.guest_id
+  hardware_version = var.hardware_version
+  host_system_id   = var.host_system_id
+  name             = var.name
 
   dynamic "network_interface" {
     for_each = var.network_interface_block[*]
@@ -93,9 +103,43 @@ resource "vsphere_virtual_machine" "virtual_machine" {
     }
   }
 
-  disk {
-    label            = var.disk_label
-    size             = var.disk_size
-    thin_provisioned = var.thin_provisioned
+  pci_device_id = var.pci_device_id
+
+  dynamic "ovf_deploy" {
+    for_each = var.ovf_deploy_block[*]
+    content {
+      allow_unverified_ssl_cert = ovf_deploy.value.allow_unverified_ssl_cert
+      enable_hidden_properties  = ovf_deploy.value.enable_hidden_properties
+      local_ovf_path            = ovf_deploy.value.local_ovf_path
+      remote_ovf_url            = ovf_deploy.value.remote_ovf_url
+      ip_allocation_policy      = ovf_deploy.value.ip_allocation_policy
+      ip_protocol               = ovf_deploy.value.ip_protocol
+      disk_provisioning         = ovf_deploy.value.disk_provisioning
+      deployment_option         = ovf_deploy.value.deployment_option
+      ovf_network_map           = ovf_deploy.value.ovf_network_map
+    }
   }
+
+  replace_trigger   = var.replace_trigger
+  resource_pool_id  = var.resource_pool_id
+  scsi_type         = var.scsi_type
+  scsi_bus_sharing  = var.scsi_bus_sharing
+  storage_policy_id = var.storage_policy_id
+  tags              = var.tags
+
+  dynamic "vapp" {
+    for_each = var.ovf_deploy_block
+    content {
+      properties = var.key
+
+    }
+  }
+
+  wait_for_guest_net_timeout = var.wait_for_guest_net_timeout
+  sync_time_with_host        = var.sync_time_with_host
+  num_cpus                   = var.num_cpus
+  memory                     = var.memory
+  efi_secure_boot_enabled    = var.efi_secure_boot_enabled
 }
+
+# sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove -y && sudo apt-get autoclean -y
