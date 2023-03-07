@@ -128,10 +128,9 @@ resource "vsphere_virtual_machine" "virtual_machine" {
   tags              = var.tags
 
   dynamic "vapp" {
-    for_each = var.ovf_deploy_block
+    for_each = var.vapp_block[*]
     content {
-      properties = var.key
-
+      properties = vapp.value.properties
     }
   }
 

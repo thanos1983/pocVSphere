@@ -119,53 +119,6 @@ variable "vsphere_network_vm" {
   type        = string
 }
 
-variable "scsi_type" {
-  description = "The SCSI controller type for the virtual machine."
-  type        = string
-  default     = "pvscsi"
-}
-
-variable "scsi_bus_sharing" {
-  description = "The type of SCSI bus sharing for the virtual machine SCSI controller."
-  type        = string
-  validation {
-    condition     = contains(["virtualSharing", "physicalSharing", "noSharing"], var.scsi_bus_sharing)
-    error_message = "Invalid input, valid input options are: physicalSharing, virtualSharing or noSharing."
-  }
-  default = "noSharing"
-}
-
-variable "storage_policy_id" {
-  description = "The ID of the storage policy to assign to the home directory of a virtual machine."
-  type        = string
-  default     = null
-}
-
-variable "tags" {
-  description = "The IDs of any tags to attach to this resource. Please refer to the vsphere_tag resource for more information on applying tags to virtual machine resources."
-  type        = set(string)
-  default     = null
-}
-
-variable "vapp_block" {
-  description = "Used for vApp configurations. The only sub-key available is properties, which is a key/value map of properties for virtual machines imported from and OVF/OVA."
-  type        = map(object({
-    properties = string
-    guestinfo  = set(object({
-      "guestinfo.hostname"  = string
-      "guestinfo.ipaddress" = string
-      "guestinfo.netmask"   = string
-      "guestinfo.gateway"   = string
-      "guestinfo.dns"       = string
-      "guestinfo.domain"    = string
-      "guestinfo.ntp"       = string
-      "guestinfo.password"  = string
-      "guestinfo.ssh"       = bool
-    }))
-  }))
-  default = null
-}
-
 variable "num_cpus" {
   description = "The total number of virtual processor cores to assign to the virtual machine. Default: 1."
   type        = number
@@ -294,6 +247,42 @@ variable "replace_trigger" {
 variable "resource_pool_id" {
   description = "The managed object reference ID of the resource pool in which to place the virtual machine."
   type        = string
+}
+
+variable "scsi_type" {
+  description = "The SCSI controller type for the virtual machine."
+  type        = string
+  default     = "pvscsi"
+}
+
+variable "scsi_bus_sharing" {
+  description = "The type of SCSI bus sharing for the virtual machine SCSI controller."
+  type        = string
+  validation {
+    condition     = contains(["virtualSharing", "physicalSharing", "noSharing"], var.scsi_bus_sharing)
+    error_message = "Invalid input, valid input options are: physicalSharing, virtualSharing or noSharing."
+  }
+  default = "noSharing"
+}
+
+variable "storage_policy_id" {
+  description = "The ID of the storage policy to assign to the home directory of a virtual machine."
+  type        = string
+  default     = null
+}
+
+variable "tags" {
+  description = "The IDs of any tags to attach to this resource. Please refer to the vsphere_tag resource for more information on applying tags to virtual machine resources."
+  type        = set(string)
+  default     = null
+}
+
+variable "vapp_block" {
+  description = " Used for vApp configurations. The only sub-key available is properties, which is a key/value map of properties for virtual machines imported from and OVF/OVA."
+  type        = object({
+    properties = object({})
+  })
+  default = null
 }
 
 variable "sync_time_with_host" {
