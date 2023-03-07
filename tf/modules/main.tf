@@ -134,6 +134,8 @@ resource "vsphere_virtual_machine" "virtual_machine" {
     }
   }
 
+  cpu_hot_add_enabled        = var.cpu_hot_add_enabled
+
   wait_for_guest_net_timeout = var.wait_for_guest_net_timeout
   sync_time_with_host        = var.sync_time_with_host
   num_cpus                   = var.num_cpus

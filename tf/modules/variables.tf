@@ -119,18 +119,6 @@ variable "vsphere_network_vm" {
   type        = string
 }
 
-variable "num_cpus" {
-  description = "The total number of virtual processor cores to assign to the virtual machine. Default: 1."
-  type        = number
-  default     = 1
-}
-
-variable "memory" {
-  description = "The memory size to assign to the virtual machine, in MB. Default: 1024 (1 GB)."
-  type        = number
-  default     = 1024
-}
-
 variable "disk_label" {
   description = "A label for the virtual disk. Forces a new disk, if changed."
   type        = string
@@ -285,6 +273,18 @@ variable "vapp_block" {
   default = null
 }
 
+variable "cpu_hot_add_enabled" {
+  description = "Allow CPUs to be added to the virtual machine while it is powered on."
+  type        = string
+  default     = true
+}
+
+variable "wait_for_guest_net_timeout" {
+  description = "The amount of time, in minutes, to wait for an available guest IP address on the virtual machine."
+  type        = number
+  default     = 0
+}
+
 variable "sync_time_with_host" {
   description = "Enable the guest operating system to synchronization its clock with the host when the virtual machine is powered on or resumed."
   type        = bool
@@ -295,10 +295,16 @@ variable "sync_time_with_host" {
   default = true
 }
 
-variable "wait_for_guest_net_timeout" {
-  description = "The amount of time, in minutes, to wait for an available guest IP address on the virtual machine."
+variable "num_cpus" {
+  description = "The total number of virtual processor cores to assign to the virtual machine. Default: 1."
   type        = number
-  default     = 0
+  default     = 1
+}
+
+variable "memory" {
+  description = "The memory size to assign to the virtual machine, in MB. Default: 1024 (1 GB)."
+  type        = number
+  default     = 1024
 }
 
 variable "efi_secure_boot_enabled" {
