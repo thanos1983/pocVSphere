@@ -41,7 +41,7 @@ module "vm-iso" {
   guest_id                   = each.value.guest_id
   wait_for_guest_net_timeout = each.value.wait_for_guest_net_timeout
   sync_time_with_host        = each.value.sync_time_with_host
-  network_interfaces         = each.value.network_interfaces
+  network_interface_block    = each.value.network_interface_block
   cdrom_block                = each.value.cdrom_block
   disk_label                 = each.value.disk_label
   disk_size                  = each.value.disk_size

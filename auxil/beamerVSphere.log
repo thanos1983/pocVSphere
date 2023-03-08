@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.12) (preloaded format=pdflatex 2023.1.13)  7 MAR 2023 21:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.12) (preloaded format=pdflatex 2023.1.13)  8 MAR 2023 04:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -797,33 +797,98 @@ Package caption Info: Hyperref support is turned off
 )
 \c@subfigure=\count336
 \c@subtable=\count337
+) (C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/latex/minted\minted.sty
+Package: minted 2022/12/12 v2.7 Yet another Pygments shim for LaTeX
+(C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/latex/fvextra\fvextra.sty
+Package: fvextra 2022/11/30 v1.5 fvextra - extensions and patches for fancyvrb
+
+(C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/latex/fancyvrb\fancyvrb.sty
+Package: fancyvrb 2023/01/19 4.5a verbatim text (tvz,hv)
+\FV@CodeLineNo=\count338
+\FV@InFile=\read3
+\FV@TabBox=\box76
+\c@FancyVerbLine=\count339
+\FV@StepNumber=\count340
+\FV@OutFile=\write5
 )
-(C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/latex/datetime2\datetime2.sty
-Package: datetime2 2021/03/21 v1.5.7 (NLCT) date and time formats
+(C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/latex/upquote\upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
+)
+(C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/latex/lineno\lineno.sty
+Package: lineno 2023/01/19 line numbers on paragraphs v5.1
+\linenopenalty=\count341
+\output=\toks45
+\linenoprevgraf=\count342
+\linenumbersep=\dimen302
+\linenumberwidth=\dimen303
+\c@linenumber=\count343
+\c@pagewiselinenumber=\count344
+\c@LN@truepage=\count345
+\c@internallinenumber=\count346
+\c@internallinenumbers=\count347
+\quotelinenumbersep=\dimen304
+\bframerule=\dimen305
+\bframesep=\dimen306
+\bframebox=\box77
+\linenoamsmath@ams@eqpen=\count348
+LaTeX Info: Redefining \\ on input line 3131.
+)
+\c@FV@TrueTabGroupLevel=\count349
+\c@FV@TrueTabCounter=\count350
+\FV@TabBox@Group=\box78
+\FV@TmpLength=\skip65
+\c@FV@HighlightLinesStart=\count351
+\c@FV@HighlightLinesStop=\count352
+\FV@LoopCount=\count353
+\FV@NCharsBox=\box79
+\FV@BreakIndent=\dimen307
+\FV@BreakIndentNChars=\count354
+\FV@BreakSymbolSepLeft=\dimen308
+\FV@BreakSymbolSepLeftNChars=\count355
+\FV@BreakSymbolSepRight=\dimen309
+\FV@BreakSymbolSepRightNChars=\count356
+\FV@BreakSymbolIndentLeft=\dimen310
+\FV@BreakSymbolIndentLeftNChars=\count357
+\FV@BreakSymbolIndentRight=\dimen311
+\FV@BreakSymbolIndentRightNChars=\count358
+\c@FancyVerbLineBreakLast=\count359
+\FV@LineBox=\box80
+\FV@LineIndentBox=\box81
+\c@FV@BreakBufferDepth=\count360
+\FV@LineWidth=\dimen312
+)
+(C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
+Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
+)
+(C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/latex/tools\calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count361
+\calc@Bcount=\count362
+\calc@Adimen=\dimen313
+\calc@Bdimen=\dimen314
+\calc@Askip=\skip66
+\calc@Bskip=\skip67
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count363
+\calc@Cskip=\skip68
+)
+(C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/latex/tools\shellesc.sty
+Package: shellesc 2019/11/08 v1.0c unified shell escape interface for LaTeX
+Package shellesc Info: Restricted shell escape enabled on input line 77.
+)
+(C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/latex/ifplatform\ifplatform.st
+y
+Package: ifplatform 2017/10/13 v0.4a Testing for the operating system
 
+(C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/generic/catchfile\catchfile.st
+y
+Package: catchfile 2019/12/09 v1.8 Catch the contents of a file (HO)
+) (C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifluatex.sty
+Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
+)
 
-! LaTeX Error: File `tracklang.sty' not found.
+Package ifplatform Warning: 
+    shell escape is disabled, so I can only detect \ifwindows.
 
-Type X to quit or <RETURN> to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/latex/datetime2\datetime2.sty:4
-4: Emergency stop.
-<read *> 
-         
-l.44 \RequirePackage
-                    {etoolbox}^^M
-*** (cannot \read from terminal in nonstop modes)
-
- 
-Here is how much of TeX's memory you used:
- 21613 strings out of 476406
- 422983 string characters out of 2790039
- 1848787 words of memory out of 3000000
- 41579 multiletter control sequences out of 15000+600000
- 512892 words of font info for 34 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 128i,0n,122p,454b,447s stack positions out of 10000i,1000n,20000p,200000b,80000s
-C:\Users\ATGA\AppData\Local\Programs\MiKTeX\tex/latex/datetime2\datetime2.sty:4
-4:  ==> Fatal error occurred, no output PDF file produced!
