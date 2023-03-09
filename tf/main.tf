@@ -1,5 +1,5 @@
 #module "vm-template-linux" {
-#  source                     = "./modules"
+#  source                     = "./modules/vsphereVirtualMachine"
 #  name                       = "ubuntu-server-template-demo"
 #  resource_pool_id           = data.vsphere_compute_cluster.cluster.resource_pool_id
 #  datastore_id               = data.vsphere_datastore.datastore.id
@@ -15,7 +15,7 @@
 #}
 
 #module "vm-template-windows" {
-#  source                     = "./modules"
+#  source                     = "./modules/vsphereVirtualMachine"
 #  name                       = "windows-server-template-demo"
 #  resource_pool_id           = data.vsphere_compute_cluster.cluster.resource_pool_id
 #  datastore_id               = data.vsphere_datastore.datastore.id
@@ -31,7 +31,7 @@
 #}
 
 module "vm-template" {
-  source                     = "./modules"
+  source                     = "./modules/vsphereVirtualMachine"
   for_each                   = local.vms_to_provision
   name                       = each.value.name
   resource_pool_id           = each.value.resource_pool_id

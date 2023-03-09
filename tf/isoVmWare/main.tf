@@ -1,5 +1,5 @@
 #module "vm-iso-linux" {
-#  source                     = ".././modules"
+#  source                     = ".././modules/vsphereVirtualMachine"
 #  name                       = local.vms_to_provision.linux_vm.name
 #  resource_pool_id           = local.vms_to_provision.linux_vm.resource_pool_id
 #  datastore_id               = local.vms_to_provision.linux_vm.datastore_id
@@ -14,7 +14,7 @@
 #}
 
 #module "vm-iso-windows" {
-#  source                     = ".././modules"
+#  source                     = ".././modules/vsphereVirtualMachine"
 #  name                       = local.vms_to_provision.windows_vm.name
 #  resource_pool_id           = local.vms_to_provision.windows_vm.resource_pool_id
 #  datastore_id               = local.vms_to_provision.windows_vm.datastore_id
@@ -29,7 +29,7 @@
 #}
 
 module "vm-iso" {
-  source                     = ".././modules"
+  source                     = ".././modules/vsphereVirtualMachine"
   for_each                   = local.vms_to_provision
   name                       = each.value.name
   resource_pool_id           = each.value.resource_pool_id
