@@ -10,8 +10,7 @@
 #  sync_time_with_host        = local.vms_to_provision.linux_vm.sync_time_with_host
 #  network_interfaces         = local.vms_to_provision.linux_vm.network_interfaces
 #  cdrom_block                = local.vms_to_provision.linux_vm.cdrom_block
-#  disk_label                 = local.vms_to_provision.linux_vm.disk_label
-#  disk_size                  = local.vms_to_provision.linux_vm.disk_size
+#  disk_block                 = local.disk_block_linux
 #}
 
 #module "vm-iso-windows" {
@@ -26,8 +25,7 @@
 #  sync_time_with_host        = local.vms_to_provision.windows_vm.sync_time_with_host
 #  network_interfaces         = local.vms_to_provision.windows_vm.network_interfaces
 #  cdrom_block                = local.vms_to_provision.windows_vm.cdrom_block
-#  disk_label                 = local.vms_to_provision.windows_vm.disk_label
-#  disk_size                  = local.vms_to_provision.windows_vm.disk_size
+#  disk_block                 = local.disk_block_linux
 #}
 
 module "vm-iso" {
@@ -43,6 +41,5 @@ module "vm-iso" {
   sync_time_with_host        = each.value.sync_time_with_host
   network_interface_block    = each.value.network_interface_block
   cdrom_block                = each.value.cdrom_block
-  disk_label                 = each.value.disk_label
-  disk_size                  = each.value.disk_size
+  disk_block                 = each.value.disk_block
 }

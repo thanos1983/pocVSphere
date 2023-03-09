@@ -5,8 +5,9 @@ resource "vsphere_virtual_machine" "virtual_machine" {
   dynamic "cdrom" {
     for_each = var.cdrom_block[*]
     content {
-      datastore_id = cdrom.value.datastore_id
-      path         = cdrom.value.path
+      client_device = cdrom.value.client_device
+      datastore_id  = cdrom.value.datastore_id
+      path          = cdrom.value.path
     }
   }
 
@@ -75,10 +76,28 @@ resource "vsphere_virtual_machine" "virtual_machine" {
   datastore_cluster_id         = var.datastore_cluster_id
   datacenter_id                = var.datacenter_id
 
-  disk {
-    label            = var.disk_label
-    size             = var.disk_size
-    thin_provisioned = var.thin_provisioned
+  dynamic "disk" {
+    for_each = var.disk_block[*]
+    content {
+      label             = disk.value.label
+      size              = disk.value.size
+      unit_number       = disk.value.unit_number
+      datastore_id      = disk.value.datastore_id
+      attach            = disk.value.attach
+      path              = disk.value.path
+      keep_on_remove    = disk.value.keep_on_remove
+      disk_mode         = disk.value.disk_mode
+      eagerly_scrub     = disk.value.eagerly_scrub
+      thin_provisioned  = disk.value.thin_provisioned
+      disk_sharing      = disk.value.disk_sharing
+      write_through     = disk.value.write_through
+      io_limit          = disk.value.io_limit
+      io_reservation    = disk.value.io_reservation
+      io_share_level    = disk.value.io_share_level
+      io_share_count    = disk.value.io_share_count
+      storage_policy_id = disk.value.storage_policy_id
+      controller_type   = disk.value.controller_type
+    }
   }
 
   extra_config     = var.extra_config
@@ -134,13 +153,48 @@ resource "vsphere_virtual_machine" "virtual_machine" {
     }
   }
 
-  cpu_hot_add_enabled        = var.cpu_hot_add_enabled
-
-  wait_for_guest_net_timeout = var.wait_for_guest_net_timeout
-  sync_time_with_host        = var.sync_time_with_host
-  num_cpus                   = var.num_cpus
-  memory                     = var.memory
-  efi_secure_boot_enabled    = var.efi_secure_boot_enabled
+  cpu_hot_add_enabled                     = var.cpu_hot_add_enabled
+  cpu_hot_remove_enabled                  = var.cpu_hot_remove_enabled
+  memory                                  = var.memory
+  memory_hot_add_enabled                  = var.memory_hot_add_enabled
+  num_cores_per_socket                    = var.num_cores_per_socket
+  num_cpus                                = var.num_cpus
+  boot_delay                              = var.boot_delay
+  boot_retry_delay                        = var.boot_retry_delay
+  boot_retry_enabled                      = var.boot_retry_enabled
+  efi_secure_boot_enabled                 = var.efi_secure_boot_enabled
+  run_tools_scripts_after_power_on        = var.run_tools_scripts_after_power_on
+  run_tools_scripts_after_resume          = var.run_tools_scripts_after_resume
+  run_tools_scripts_before_guest_reboot   = var.run_tools_scripts_before_guest_reboot
+  run_tools_scripts_before_guest_shutdown = var.run_tools_scripts_before_guest_shutdown
+  run_tools_scripts_before_guest_standby  = var.run_tools_scripts_before_guest_standby
+  sync_time_with_host                     = var.sync_time_with_host
+  sync_time_with_host_periodically        = var.sync_time_with_host_periodically
+  tools_upgrade_policy                    = var.tools_upgrade_policy
+  cpu_limit                               = var.cpu_limit
+  cpu_reservation                         = var.cpu_reservation
+  cpu_share_level                         = var.cpu_share_level
+  cpu_share_count                         = var.cpu_share_count
+  memory_limit                            = var.memory_limit
+  memory_reservation                      = var.memory_reservation
+  memory_share_level                      = var.memory_share_level
+  memory_share_count                      = var.memory_share_count
+  cpu_performance_counters_enabled        = var.cpu_performance_counters_enabled
+  enable_disk_uuid                        = var.enable_disk_uuid
+  enable_logging                          = var.enable_logging
+  ept_rvi_mode                            = var.ept_rvi_mode
+  force_power_off                         = var.force_power_off
+  hv_mode                                 = var.hv_mode
+  ide_controller_count                    = var.ide_controller_count
+  ignored_guest_ips                       = var.ignored_guest_ips
+  latency_sensitivity                     = var.latency_sensitivity
+  migrate_wait_timeout                    = var.migrate_wait_timeout
+  nested_hv_enabled                       = var.nested_hv_enabled
+  shutdown_wait_timeout                   = var.shutdown_wait_timeout
+  swap_placement_policy                   = var.swap_placement_policy
+  vbs_enabled                             = var.vbs_enabled
+  vvtd_enabled                            = var.vvtd_enabled
+  wait_for_guest_ip_timeout               = var.wait_for_guest_ip_timeout
+  wait_for_guest_net_routable             = var.wait_for_guest_net_routable
+  wait_for_guest_net_timeout              = var.wait_for_guest_net_timeout
 }
-
-# sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove -y && sudo apt-get autoclean -y

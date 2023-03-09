@@ -10,9 +10,7 @@
 #  wait_for_guest_net_timeout = var.wait_for_guest_net_timeout
 #  sync_time_with_host        = var.sync_time_with_host
 #  network_interface_block    = local.network_interface_block_linux
-#  disk_label                 = var.disk_label
-#  disk_size                  = data.vsphere_virtual_machine.template_linux.disks["0"].size
-#  thin_provisioned           = data.vsphere_virtual_machine.template_linux.disks["0"].thin_provisioned
+#  disk_block                 = local.disk_block_linux
 #  clone_block                = local.clone_block_linux
 #}
 
@@ -28,9 +26,7 @@
 #  wait_for_guest_net_timeout = var.wait_for_guest_net_timeout
 #  sync_time_with_host        = var.sync_time_with_host
 #  network_interface_block    = local.network_interface_block_windows
-#  disk_label                 = var.disk_label
-#  disk_size                  = data.vsphere_virtual_machine.template_windows.disks["0"].size
-#  thin_provisioned           = data.vsphere_virtual_machine.template_windows.disks["0"].thin_provisioned
+#  disk_block                 = local.disk_block_windows
 #  clone_block                = local.clone_block_windows
 #}
 
@@ -48,8 +44,6 @@ module "vm-template" {
   wait_for_guest_net_timeout = each.value.wait_for_guest_net_timeout
   sync_time_with_host        = each.value.sync_time_with_host
   network_interface_block    = each.value.network_interface_block
-  disk_label                 = each.value.disk_label
-  disk_size                  = each.value.disk_size
-  thin_provisioned           = each.value.thin_provisioned
+  disk_block                 = each.value.disk_block
   clone_block                = each.value.clone_block
 }

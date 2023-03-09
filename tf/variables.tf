@@ -119,14 +119,14 @@ variable "sync_time_with_host" {
   default = true
 }
 
-variable "disk_label" {
-  description = "A label for the virtual disk. Forces a new disk, if changed."
-  type        = string
-  default     = "disk0"
-}
-
 variable "wait_for_guest_net_timeout" {
   description = "The amount of time, in minutes, to wait for an available guest IP address on the virtual machine."
   type        = number
   default     = 0
+}
+
+variable "disk_label" {
+  description = "A specification for a virtual disk device on the virtual machine."
+  type        = string
+  default     = "disk0"
 }

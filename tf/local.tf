@@ -14,7 +14,7 @@ locals {
     customize_block = {
       linux_options_block = {
         host_name = "linux-demo-host"
-        domain    = "NNITCORP.com"
+        domain    = "MYDOMAIN.com"
       }
       network_interface_block = {
         #      ipv4_address = "10.98.135.76"
@@ -40,6 +40,18 @@ locals {
     }
   }
 
+  disk_block_linux = {
+    label            = var.disk_label
+    size             = data.vsphere_virtual_machine.template_linux.disks["0"].size
+    thin_provisioned = data.vsphere_virtual_machine.template_linux.disks["0"].thin_provisioned
+  }
+
+  disk_block_windows = {
+    label            = var.disk_label
+    size             = data.vsphere_virtual_machine.template_windows.disks["0"].size
+    thin_provisioned = data.vsphere_virtual_machine.template_windows.disks["0"].thin_provisioned
+  }
+
   vms_to_provision = {
     linux_vm = {
       name                       = "ubuntu-server-template-demo"
@@ -53,9 +65,7 @@ locals {
       wait_for_guest_net_timeout = var.wait_for_guest_net_timeout
       sync_time_with_host        = var.sync_time_with_host
       network_interface_block    = local.network_interface_block_linux
-      disk_label                 = var.disk_label
-      disk_size                  = data.vsphere_virtual_machine.template_linux.disks["0"].size
-      thin_provisioned           = data.vsphere_virtual_machine.template_linux.disks["0"].thin_provisioned
+      disk_block                 = local.disk_block_linux
       clone_block                = local.clone_block_linux
     }
     windows_vm = {
@@ -70,9 +80,7 @@ locals {
       wait_for_guest_net_timeout = var.wait_for_guest_net_timeout
       sync_time_with_host        = var.sync_time_with_host
       network_interface_block    = local.network_interface_block_windows
-      disk_label                 = var.disk_label
-      disk_size                  = data.vsphere_virtual_machine.template_windows.disks["0"].size
-      thin_provisioned           = data.vsphere_virtual_machine.template_windows.disks["0"].thin_provisioned
+      disk_block                 = local.disk_block_windows
       clone_block                = local.clone_block_windows
     }
   }

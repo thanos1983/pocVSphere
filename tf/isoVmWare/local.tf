@@ -6,27 +6,29 @@ locals {
   cd_rom_path_remote_windows = "${local.iso_dir}/${local.windows_image}"
 
   network_interface_block = {
-    network_id   = data.vsphere_network.network.id
+    network_id = data.vsphere_network.network.id
   }
 
   vms_to_provision = {
-#    linux_vm = {
-#      name                       = "ubuntu-iso"
-#      resource_pool_id           = data.vsphere_compute_cluster.cluster.resource_pool_id
-#      datastore_id               = data.vsphere_datastore.datastore.id
-#      num_cpus                   = var.num_cpus
-#      memory                     = var.memory
-#      guest_id                   = var.vsphere_virtual_machine_ubuntu
-#      wait_for_guest_net_timeout = var.wait_for_guest_net_timeout
-#      sync_time_with_host        = var.sync_time_with_host
-#      network_interface_block    = local.network_interface_block
-#      cdrom_block                = {
-#        datastore_id = data.vsphere_datastore.iso_datastore.id
-#        path         = local.cd_rom_path_remote_linux
-#      }
-#      disk_label = var.disk_label
-#      disk_size  = var.disk_size
-#    }
+    linux_vm = {
+      name                       = "ubuntu-iso"
+      resource_pool_id           = data.vsphere_compute_cluster.cluster.resource_pool_id
+      datastore_id               = data.vsphere_datastore.datastore.id
+      num_cpus                   = var.num_cpus
+      memory                     = var.memory
+      guest_id                   = var.vsphere_virtual_machine_ubuntu
+      wait_for_guest_net_timeout = var.wait_for_guest_net_timeout
+      sync_time_with_host        = var.sync_time_with_host
+      network_interface_block    = local.network_interface_block
+      cdrom_block                = {
+        datastore_id = data.vsphere_datastore.iso_datastore.id
+        path         = local.cd_rom_path_remote_linux
+      }
+      disk_block = {
+        label = var.disk_label
+        size  = var.disk_size
+      }
+    }
     windows_vm = {
       name                       = "windows-iso"
       resource_pool_id           = data.vsphere_compute_cluster.cluster.resource_pool_id
@@ -41,8 +43,10 @@ locals {
         datastore_id = data.vsphere_datastore.iso_datastore.id
         path         = local.cd_rom_path_remote_windows
       }
-      disk_label = var.disk_label
-      disk_size  = var.disk_size
+      disk_block = {
+        label = var.disk_label
+        size  = var.disk_size
+      }
     }
   }
 }

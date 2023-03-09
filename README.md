@@ -444,7 +444,7 @@ Terraform will perform the following actions:
               - timeout         = 10 -> null
 
               - linux_options {
-                  - domain       = "NNITCORP.com" -> null
+                  - domain       = "MYDOMAIN.com" -> null
                   - host_name    = "foo-demo-host" -> null
                   - hw_clock_utc = true -> null
                 }
