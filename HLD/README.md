@@ -14,3 +14,7 @@ The way that the user can create an HLD diagram. Sample of code:
 ```bash
 $ python3 hldInfra.py
 ```
+
+## Sample of examples
+
+[diagrams/getting-started/examples](https://diagrams.mingrammer.com/docs/getting-started/examples)
